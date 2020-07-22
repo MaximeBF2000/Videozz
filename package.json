@@ -1,0 +1,24 @@
+{
+  "name": "Videozz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "parcel index.html -p 3000",
+    "build": "parcel build index.html"
+  },
+  "keywords": [],
+  "author": "Maxime BOUNAAS-FERRET",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-icons": "^3.10.0",
+    "regenerator-runtime": "^0.13.6"
+  },
+  "devDependencies": {
+    "cssnano": "^4.1.10",
+    "sass": "^1.26.10"
+  }
+}

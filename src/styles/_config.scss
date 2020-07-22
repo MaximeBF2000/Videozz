@@ -1,0 +1,26 @@
+// Vars
+
+$ff: "Montserrat", sans-serif;
+
+$bgc: #0d5ee0;
+$darkgrey: #262626;
+
+$white: #fefefe;
+
+$container_size: 3rem;
+
+
+
+// Classes
+.center{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-h{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

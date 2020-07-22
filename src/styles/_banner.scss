@@ -1,0 +1,46 @@
+@import "./config";
+
+.banner{
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  object-fit: cover;
+  height: 100vh;
+  @extend .center-h;
+
+  .banner_content{
+    padding: 0 2rem;
+
+    .banner_title{
+      font-size: 3rem;
+    }
+
+    .banner_buttons{
+      margin-top: 1rem;
+      margin-bottom: 2.5rem;
+
+      .banner_btn{
+        all: unset;
+        cursor: pointer;
+        padding: .3rem 2.5rem;
+        margin-right: 1rem;
+        border-radius: .25rem;
+        background-color: rgba($darkgrey, .9);
+        transition: .3s;
+
+        &:hover{
+          background-color: rgba($white, .9);
+          color: #000;
+        }
+      }
+
+    }
+
+    .banner_description{
+      font-size: .9rem;
+      max-width: 500px;
+      line-height: 1.4;
+    }
+  }
+
+}

@@ -1,0 +1,101 @@
+@import "./config";
+
+$filmItemWidth: 150px;
+
+.filmCategory{
+  margin: 2rem 0;
+  padding: 0 $container_size;
+  position: relative;
+
+  .categoryTitle{
+    margin-left: 10px;
+  }
+
+  .chevron{
+    color: $white;
+    opacity: .3;
+    font-size: 3rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    cursor: pointer;
+    background: transparent;
+
+    $chevron_position: 0px;
+
+    svg path{
+      pointer-events: none;
+    }
+
+    &:hover{
+      opacity: 1;
+    }
+
+    &.chevronLeft{
+      left: $chevron_position;
+    }
+    &.chevronRight{
+      right: $chevron_position;
+    }
+  }
+
+  .filmRow{
+    display: flex;
+    overflow-x: scroll;
+    padding: 1rem 0;
+    transition: .3s;
+
+    &::-webkit-scrollbar{
+      display: none;
+    }
+
+    .filmItem{
+      width: $filmItemWidth;
+      background-color: transparent /* OU QUAND ON MET LE TITRE : $darkgrey */;
+      margin: 0 10px;
+      cursor: pointer;
+
+      &:hover{
+        transform: scale(1.1);
+      }
+
+      .filmImg{
+        width: $filmItemWidth;
+
+        img{
+          width: 100%;
+          object-fit: contain;
+        }
+      }
+
+      .filmTitleContainer{
+        @extend .center;
+        width: 100%;
+        height: 2rem;
+        padding: 0 .3rem;
+        padding-bottom: .5rem;
+        
+        .filmTitle{
+          width: 100%;
+          text-align: center;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+      }
+
+    }
+
+    &.bigger{
+      .filmItem{
+        width: $filmItemWidth + 65;
+
+        .filmImg{
+          width: $filmItemWidth + 65;
+        }
+      }
+    }
+
+  }
+
+}
