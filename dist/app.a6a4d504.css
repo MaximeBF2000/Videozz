@@ -140,7 +140,7 @@ body.dark {
 }
 .filmCategory .chevron {
   color: #fefefe;
-  opacity: 0.3;
+  opacity: 0;
   font-size: 3rem;
   position: absolute;
   top: 50%;
@@ -152,14 +152,17 @@ body.dark {
 .filmCategory .chevron svg path {
   pointer-events: none;
 }
-.filmCategory .chevron:hover {
-  opacity: 1;
-}
 .filmCategory .chevron.chevronLeft {
   left: 0px;
 }
 .filmCategory .chevron.chevronRight {
   right: 0px;
+}
+.filmCategory:hover .chevron {
+  opacity: 0.3;
+}
+.filmCategory:hover .chevron:hover {
+  opacity: 1;
 }
 .filmCategory .filmRow {
   display: flex;
