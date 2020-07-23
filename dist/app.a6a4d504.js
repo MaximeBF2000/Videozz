@@ -50325,7 +50325,89 @@ YouTube.defaultProps = {
 };
 var _default = YouTube;
 exports.default = _default;
-},{"prop-types":"node_modules/prop-types/index.js","react":"node_modules/react/index.js","fast-deep-equal":"node_modules/fast-deep-equal/index.js","youtube-player":"node_modules/youtube-player/dist/index.js"}],"src/components/SingleFilmDetails.js":[function(require,module,exports) {
+},{"prop-types":"node_modules/prop-types/index.js","react":"node_modules/react/index.js","fast-deep-equal":"node_modules/fast-deep-equal/index.js","youtube-player":"node_modules/youtube-player/dist/index.js"}],"src/modules/filmGenres.json":[function(require,module,exports) {
+module.exports = [{
+  "id": 28,
+  "name": "Action"
+}, {
+  "id": 12,
+  "name": "Adventure"
+}, {
+  "id": 16,
+  "name": "Animation"
+}, {
+  "id": 35,
+  "name": "Comedy"
+}, {
+  "id": 80,
+  "name": "Crime"
+}, {
+  "id": 99,
+  "name": "Documentary"
+}, {
+  "id": 18,
+  "name": "Drama"
+}, {
+  "id": 10751,
+  "name": "Family"
+}, {
+  "id": 14,
+  "name": "Fantasy"
+}, {
+  "id": 36,
+  "name": "History"
+}, {
+  "id": 27,
+  "name": "Horror"
+}, {
+  "id": 10402,
+  "name": "Music"
+}, {
+  "id": 9648,
+  "name": "Mystery"
+}, {
+  "id": 10749,
+  "name": "Romance"
+}, {
+  "id": 878,
+  "name": "Science Fiction"
+}, {
+  "id": 10770,
+  "name": "TV Movie"
+}, {
+  "id": 53,
+  "name": "Thriller"
+}, {
+  "id": 10752,
+  "name": "War"
+}, {
+  "id": 37,
+  "name": "Western"
+}];
+},{}],"src/modules/filmGenreConverter.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _filmGenres = _interopRequireDefault(require("./filmGenres.json"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _default(arr_of_ids) {
+  var arr_of_genres = [];
+  arr_of_ids.forEach(function (el) {
+    _filmGenres.default.forEach(function (KeyValuePair) {
+      if (KeyValuePair.id == el) {
+        arr_of_genres.push(KeyValuePair.name);
+      }
+    });
+  });
+  return arr_of_genres;
+}
+},{"./filmGenres.json":"src/modules/filmGenres.json"}],"src/components/SingleFilmDetails.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -50336,6 +50418,8 @@ exports.default = SingleFilmDetails;
 var _react = _interopRequireDefault(require("react"));
 
 var _reactYoutube = _interopRequireDefault(require("react-youtube"));
+
+var _filmGenreConverter = _interopRequireDefault(require("../modules/filmGenreConverter"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50350,6 +50434,8 @@ function SingleFilmDetails(_ref) {
       autoplay: 1
     }
   };
+  var genre_ids = (movie === null || movie === void 0 ? void 0 : movie.genre_ids) || [];
+  var genres = (0, _filmGenreConverter.default)(genre_ids);
 
   var handleError = function handleError() {
     console.log("error");
@@ -50369,9 +50455,16 @@ function SingleFilmDetails(_ref) {
     className: "details"
   }, /*#__PURE__*/_react.default.createElement("h3", null, (movie === null || movie === void 0 ? void 0 : movie.name) || (movie === null || movie === void 0 ? void 0 : movie.original_title)), /*#__PURE__*/_react.default.createElement("p", {
     className: "description"
-  }, movie === null || movie === void 0 ? void 0 : movie.overview)));
+  }, movie === null || movie === void 0 ? void 0 : movie.overview), /*#__PURE__*/_react.default.createElement("div", {
+    className: "genres"
+  }, genres.map(function (genre, i) {
+    return /*#__PURE__*/_react.default.createElement("div", {
+      className: "genre_tag",
+      key: i
+    }, genre);
+  }))));
 }
-},{"react":"node_modules/react/index.js","react-youtube":"node_modules/react-youtube/dist/index.esm.js"}],"node_modules/whatwg-fetch/fetch.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-youtube":"node_modules/react-youtube/dist/index.esm.js","../modules/filmGenreConverter":"src/modules/filmGenreConverter.js"}],"node_modules/whatwg-fetch/fetch.js":[function(require,module,exports) {
 
 "use strict";
 
@@ -51158,7 +51251,8 @@ function FilmsRow(_ref) {
   var _useState = (0, _react.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
       movies = _useState2[0],
-      setMovies = _useState2[1];
+      setMovies = _useState2[1]; // FILM DETAILS STATE
+
 
   var _useState3 = (0, _react.useState)(false),
       _useState4 = _slicedToArray(_useState3, 2),
@@ -51183,7 +51277,8 @@ function FilmsRow(_ref) {
   var _useState11 = (0, _react.useState)(false),
       _useState12 = _slicedToArray(_useState11, 2),
       hasAlreadyClicked = _useState12[0],
-      setHasAlreadyClicked = _useState12[1];
+      setHasAlreadyClicked = _useState12[1]; // GET FILMS
+
 
   (0, _react.useEffect)(function () {
     function fetchData() {
@@ -51215,7 +51310,8 @@ function FilmsRow(_ref) {
     }
 
     fetchData();
-  }, [request]);
+  }, [request]); // CHEVRON CLICK HANDLING --> MOVE LEFT OR RIGHT WITH THE CHEVRONS
+
   var scrollHandle = {
     SCROLL_INTENSITY: bigger ? 235 * 5 : 170 * 7,
     left: function left(e) {
@@ -51229,11 +51325,13 @@ function FilmsRow(_ref) {
     }
   };
 
-  var HandleItemClick = function HandleItemClick(e, movie) {
-    setMovieDetails(movie);
-    (0, _movieTrailer.default)((movie === null || movie === void 0 ? void 0 : movie.name) || (movie === null || movie === void 0 ? void 0 : movie.original_title) || "").then(function (url) {
+  var HandleItemClick = function HandleItemClick(movie) {
+    setMovieDetails(movie); // SEARCH A TRAILER BY FILM NAME (EXTERNAL MODULE)
+
+    (0, _movieTrailer.default)((movie === null || movie === void 0 ? void 0 : movie.name) || (movie === null || movie === void 0 ? void 0 : movie.original_title) || (movie === null || movie === void 0 ? void 0 : movie.original_name) || "").then(function (url) {
+      // RETURN A VIDEO :
       setHasVideo(true);
-      var urlParams = new URLSearchParams(new URL(url).search);
+      var urlParams = new URLSearchParams(new URL(url).search); // THE VIDEO FOUND IS ALREADY RUNNING ? THEN CLOSE
 
       if (urlParams.get("v") === videoUrl && videoUrl !== "") {
         setMovieDetails({});
@@ -51244,8 +51342,9 @@ function FilmsRow(_ref) {
 
       setVideoUrl(urlParams.get("v"));
     }).catch(function (err) {
+      // NO VIDEO FOUND OR OTHER ERROR
       setHasAlreadyClicked(!hasAlreadyClicked);
-      setHasVideo(false);
+      setHasVideo(false); // WE ALREADY CLICKED TO OPEN THIS TAB ? THEN CLOSE
 
       if (hasAlreadyClicked) {
         setShowDetails(false);
@@ -51279,8 +51378,8 @@ function FilmsRow(_ref) {
       return /*#__PURE__*/_react.default.createElement("div", {
         className: "filmItem",
         key: movie.id,
-        onClick: function onClick(e) {
-          return HandleItemClick(e, movie);
+        onClick: function onClick() {
+          return HandleItemClick(movie);
         }
       }, /*#__PURE__*/_react.default.createElement("div", {
         className: "filmImg"
@@ -51376,7 +51475,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49900" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50497" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

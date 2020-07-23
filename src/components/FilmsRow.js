@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { BsChevronCompactRight, BsChevronCompactLeft } from "react-icons/bs"
 
-// import FilmItem from "./FilmItem"
 import SingleFilmDetails from "./SingleFilmDetails"
 import { filmServer } from "../modules/filmRequests"
 import movieTrailer from "movie-trailer"
@@ -11,12 +10,15 @@ const IMG_BASE_URL = "https://image.tmdb.org/t/p/original/"
 
 export default function FilmsRow({ title, request, bigger }) {
   const [movies, setMovies] = useState([])
+
+  // FILM DETAILS STATE
   const [showDetails, setShowDetails] = useState(false)
   const [videoUrl, setVideoUrl] = useState("")
   const [movieDetails, setMovieDetails] = useState({})
   const [hasVideo, setHasVideo] = useState(true)
   const [hasAlreadyClicked, setHasAlreadyClicked] = useState(false)
 
+  // GET FILMS
   useEffect(() => {
     async function fetchData() {
       const response = await filmServer.get(request)
@@ -25,6 +27,7 @@ export default function FilmsRow({ title, request, bigger }) {
     fetchData()
   }, [request])
 
+  // CHEVRON CLICK HANDLING --> MOVE LEFT OR RIGHT WITH THE CHEVRONS
   const scrollHandle = {
     SCROLL_INTENSITY: bigger ? 235*5 : 170*7,
     left: e => {
@@ -38,12 +41,17 @@ export default function FilmsRow({ title, request, bigger }) {
     }
   }
 
-  const HandleItemClick = (e, movie) => {
+  const HandleItemClick = movie => {
     setMovieDetails(movie)
-    movieTrailer(movie?.name || movie?.original_title || "")
+
+    // SEARCH A TRAILER BY FILM NAME (EXTERNAL MODULE)
+    movieTrailer(movie?.name || movie?.original_title || movie?.original_name || "")
       .then(url => {
+        // RETURN A VIDEO :
         setHasVideo(true)
         const urlParams = new URLSearchParams(new URL(url).search)
+
+        // THE VIDEO FOUND IS ALREADY RUNNING ? THEN CLOSE
         if(urlParams.get("v") === videoUrl && videoUrl !== ""){
           setMovieDetails({})
           setVideoUrl("")
@@ -53,8 +61,11 @@ export default function FilmsRow({ title, request, bigger }) {
         setVideoUrl(urlParams.get("v"))
       })
       .catch(err => {
+        // NO VIDEO FOUND OR OTHER ERROR
         setHasAlreadyClicked(!hasAlreadyClicked)
         setHasVideo(false)
+
+        // WE ALREADY CLICKED TO OPEN THIS TAB ? THEN CLOSE
         if(hasAlreadyClicked) {
           setShowDetails(false)
           setHasAlreadyClicked(false)
@@ -78,7 +89,7 @@ export default function FilmsRow({ title, request, bigger }) {
           if(movie.poster_path){
             const movieName = movie.name || movie.original_title
             return (
-              <div className="filmItem" key={movie.id} onClick={e => HandleItemClick(e, movie)}>
+              <div className="filmItem" key={movie.id} onClick={() => HandleItemClick(movie)}>
                 <div className="filmImg">
                   <img src={IMG_BASE_URL + movie.poster_path} alt={"Movie : " + (movieName || "unknown")}/>
                 </div>

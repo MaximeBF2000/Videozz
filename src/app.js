@@ -9,7 +9,6 @@ import Navbar from "./components/Navbar"
 import requests from "./modules/filmRequests"
 import FilmsRow from "./components/FilmsRow"
 
-
 function App() {
   return (
     <>
