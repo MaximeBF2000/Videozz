@@ -1,0 +1,36 @@
+import React from 'react'
+import Youtube from "react-youtube"
+
+export default function SingleFilmDetails({ videoId, movie, hasVideo }) {
+  const video_options = {
+    height: 320,
+    width: "100%",
+    playerVars: {
+      autoplay: 1
+    }
+  }
+
+  const handleError = () => {
+    console.log("error")
+  }
+
+  return (
+    <div className="singleFilmDetails">
+      <div className="trailer">
+        {hasVideo ?
+        <Youtube
+          videoId={videoId}
+          opts={video_options}
+          onError={handleError}
+        /> 
+        : <div className="noVideoFound">No trailer found</div> }
+      </div>
+      <div className="details">
+        <h3>{movie?.name || movie?.original_title}</h3>
+        <p className="description">
+          {movie?.overview}
+        </p>
+      </div>
+    </div>
+  )
+}

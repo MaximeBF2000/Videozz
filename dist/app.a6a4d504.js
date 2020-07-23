@@ -47872,33 +47872,3243 @@ var BsX = function (props) {
 
 exports.BsX = BsX;
 BsX.displayName = "BsX";
-},{"../lib":"node_modules/react-icons/lib/esm/index.js"}],"src/components/FilmItem.js":[function(require,module,exports) {
+},{"../lib":"node_modules/react-icons/lib/esm/index.js"}],"node_modules/react-is/cjs/react-is.development.js":[function(require,module,exports) {
+/** @license React v16.13.1
+ * react-is.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+'use strict';
+
+if ("development" !== "production") {
+  (function () {
+    'use strict'; // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+    // nor polyfill, then a plain number is used for performance.
+
+    var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+    var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+    var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+    var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+    var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+    var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+    var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+    var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+    // (unstable) APIs that have been removed. Can we remove the symbols?
+
+    var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+    var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+    var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+    var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+    var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
+    var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+    var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+    var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
+    var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
+    var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
+    var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
+
+    function isValidElementType(type) {
+      return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+      type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
+    }
+
+    function typeOf(object) {
+      if (typeof object === 'object' && object !== null) {
+        var $$typeof = object.$$typeof;
+
+        switch ($$typeof) {
+          case REACT_ELEMENT_TYPE:
+            var type = object.type;
+
+            switch (type) {
+              case REACT_ASYNC_MODE_TYPE:
+              case REACT_CONCURRENT_MODE_TYPE:
+              case REACT_FRAGMENT_TYPE:
+              case REACT_PROFILER_TYPE:
+              case REACT_STRICT_MODE_TYPE:
+              case REACT_SUSPENSE_TYPE:
+                return type;
+
+              default:
+                var $$typeofType = type && type.$$typeof;
+
+                switch ($$typeofType) {
+                  case REACT_CONTEXT_TYPE:
+                  case REACT_FORWARD_REF_TYPE:
+                  case REACT_LAZY_TYPE:
+                  case REACT_MEMO_TYPE:
+                  case REACT_PROVIDER_TYPE:
+                    return $$typeofType;
+
+                  default:
+                    return $$typeof;
+                }
+
+            }
+
+          case REACT_PORTAL_TYPE:
+            return $$typeof;
+        }
+      }
+
+      return undefined;
+    } // AsyncMode is deprecated along with isAsyncMode
+
+
+    var AsyncMode = REACT_ASYNC_MODE_TYPE;
+    var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+    var ContextConsumer = REACT_CONTEXT_TYPE;
+    var ContextProvider = REACT_PROVIDER_TYPE;
+    var Element = REACT_ELEMENT_TYPE;
+    var ForwardRef = REACT_FORWARD_REF_TYPE;
+    var Fragment = REACT_FRAGMENT_TYPE;
+    var Lazy = REACT_LAZY_TYPE;
+    var Memo = REACT_MEMO_TYPE;
+    var Portal = REACT_PORTAL_TYPE;
+    var Profiler = REACT_PROFILER_TYPE;
+    var StrictMode = REACT_STRICT_MODE_TYPE;
+    var Suspense = REACT_SUSPENSE_TYPE;
+    var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
+
+    function isAsyncMode(object) {
+      {
+        if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+          hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+          console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+        }
+      }
+      return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+    }
+
+    function isConcurrentMode(object) {
+      return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+    }
+
+    function isContextConsumer(object) {
+      return typeOf(object) === REACT_CONTEXT_TYPE;
+    }
+
+    function isContextProvider(object) {
+      return typeOf(object) === REACT_PROVIDER_TYPE;
+    }
+
+    function isElement(object) {
+      return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+    }
+
+    function isForwardRef(object) {
+      return typeOf(object) === REACT_FORWARD_REF_TYPE;
+    }
+
+    function isFragment(object) {
+      return typeOf(object) === REACT_FRAGMENT_TYPE;
+    }
+
+    function isLazy(object) {
+      return typeOf(object) === REACT_LAZY_TYPE;
+    }
+
+    function isMemo(object) {
+      return typeOf(object) === REACT_MEMO_TYPE;
+    }
+
+    function isPortal(object) {
+      return typeOf(object) === REACT_PORTAL_TYPE;
+    }
+
+    function isProfiler(object) {
+      return typeOf(object) === REACT_PROFILER_TYPE;
+    }
+
+    function isStrictMode(object) {
+      return typeOf(object) === REACT_STRICT_MODE_TYPE;
+    }
+
+    function isSuspense(object) {
+      return typeOf(object) === REACT_SUSPENSE_TYPE;
+    }
+
+    exports.AsyncMode = AsyncMode;
+    exports.ConcurrentMode = ConcurrentMode;
+    exports.ContextConsumer = ContextConsumer;
+    exports.ContextProvider = ContextProvider;
+    exports.Element = Element;
+    exports.ForwardRef = ForwardRef;
+    exports.Fragment = Fragment;
+    exports.Lazy = Lazy;
+    exports.Memo = Memo;
+    exports.Portal = Portal;
+    exports.Profiler = Profiler;
+    exports.StrictMode = StrictMode;
+    exports.Suspense = Suspense;
+    exports.isAsyncMode = isAsyncMode;
+    exports.isConcurrentMode = isConcurrentMode;
+    exports.isContextConsumer = isContextConsumer;
+    exports.isContextProvider = isContextProvider;
+    exports.isElement = isElement;
+    exports.isForwardRef = isForwardRef;
+    exports.isFragment = isFragment;
+    exports.isLazy = isLazy;
+    exports.isMemo = isMemo;
+    exports.isPortal = isPortal;
+    exports.isProfiler = isProfiler;
+    exports.isStrictMode = isStrictMode;
+    exports.isSuspense = isSuspense;
+    exports.isValidElementType = isValidElementType;
+    exports.typeOf = typeOf;
+  })();
+}
+},{}],"node_modules/react-is/index.js":[function(require,module,exports) {
+'use strict';
+
+if ("development" === 'production') {
+  module.exports = require('./cjs/react-is.production.min.js');
+} else {
+  module.exports = require('./cjs/react-is.development.js');
+}
+},{"./cjs/react-is.development.js":"node_modules/react-is/cjs/react-is.development.js"}],"node_modules/prop-types/factoryWithTypeCheckers.js":[function(require,module,exports) {
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+'use strict';
+
+var ReactIs = require('react-is');
+
+var assign = require('object-assign');
+
+var ReactPropTypesSecret = require('./lib/ReactPropTypesSecret');
+
+var checkPropTypes = require('./checkPropTypes');
+
+var has = Function.call.bind(Object.prototype.hasOwnProperty);
+
+var printWarning = function () {};
+
+if ("development" !== 'production') {
+  printWarning = function (text) {
+    var message = 'Warning: ' + text;
+
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+}
+
+function emptyFunctionThatReturnsNull() {
+  return null;
+}
+
+module.exports = function (isValidElement, throwOnDirectAccess) {
+  /* global Symbol */
+  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
+  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
+
+  /**
+   * Returns the iterator method function contained on the iterable object.
+   *
+   * Be sure to invoke the function with the iterable as context:
+   *
+   *     var iteratorFn = getIteratorFn(myIterable);
+   *     if (iteratorFn) {
+   *       var iterator = iteratorFn.call(myIterable);
+   *       ...
+   *     }
+   *
+   * @param {?object} maybeIterable
+   * @return {?function}
+   */
+
+  function getIteratorFn(maybeIterable) {
+    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
+
+    if (typeof iteratorFn === 'function') {
+      return iteratorFn;
+    }
+  }
+  /**
+   * Collection of methods that allow declaration and validation of props that are
+   * supplied to React components. Example usage:
+   *
+   *   var Props = require('ReactPropTypes');
+   *   var MyArticle = React.createClass({
+   *     propTypes: {
+   *       // An optional string prop named "description".
+   *       description: Props.string,
+   *
+   *       // A required enum prop named "category".
+   *       category: Props.oneOf(['News','Photos']).isRequired,
+   *
+   *       // A prop named "dialog" that requires an instance of Dialog.
+   *       dialog: Props.instanceOf(Dialog).isRequired
+   *     },
+   *     render: function() { ... }
+   *   });
+   *
+   * A more formal specification of how these methods are used:
+   *
+   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
+   *   decl := ReactPropTypes.{type}(.isRequired)?
+   *
+   * Each and every declaration produces a function with the same signature. This
+   * allows the creation of custom validation functions. For example:
+   *
+   *  var MyLink = React.createClass({
+   *    propTypes: {
+   *      // An optional string or URI prop named "href".
+   *      href: function(props, propName, componentName) {
+   *        var propValue = props[propName];
+   *        if (propValue != null && typeof propValue !== 'string' &&
+   *            !(propValue instanceof URI)) {
+   *          return new Error(
+   *            'Expected a string or an URI for ' + propName + ' in ' +
+   *            componentName
+   *          );
+   *        }
+   *      }
+   *    },
+   *    render: function() {...}
+   *  });
+   *
+   * @internal
+   */
+
+
+  var ANONYMOUS = '<<anonymous>>'; // Important!
+  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
+
+  var ReactPropTypes = {
+    array: createPrimitiveTypeChecker('array'),
+    bool: createPrimitiveTypeChecker('boolean'),
+    func: createPrimitiveTypeChecker('function'),
+    number: createPrimitiveTypeChecker('number'),
+    object: createPrimitiveTypeChecker('object'),
+    string: createPrimitiveTypeChecker('string'),
+    symbol: createPrimitiveTypeChecker('symbol'),
+    any: createAnyTypeChecker(),
+    arrayOf: createArrayOfTypeChecker,
+    element: createElementTypeChecker(),
+    elementType: createElementTypeTypeChecker(),
+    instanceOf: createInstanceTypeChecker,
+    node: createNodeChecker(),
+    objectOf: createObjectOfTypeChecker,
+    oneOf: createEnumTypeChecker,
+    oneOfType: createUnionTypeChecker,
+    shape: createShapeTypeChecker,
+    exact: createStrictShapeTypeChecker
+  };
+  /**
+   * inlined Object.is polyfill to avoid requiring consumers ship their own
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+   */
+
+  /*eslint-disable no-self-compare*/
+
+  function is(x, y) {
+    // SameValue algorithm
+    if (x === y) {
+      // Steps 1-5, 7-10
+      // Steps 6.b-6.e: +0 != -0
+      return x !== 0 || 1 / x === 1 / y;
+    } else {
+      // Step 6.a: NaN == NaN
+      return x !== x && y !== y;
+    }
+  }
+  /*eslint-enable no-self-compare*/
+
+  /**
+   * We use an Error-like object for backward compatibility as people may call
+   * PropTypes directly and inspect their output. However, we don't use real
+   * Errors anymore. We don't inspect their stack anyway, and creating them
+   * is prohibitively expensive if they are created too often, such as what
+   * happens in oneOfType() for any type before the one that matched.
+   */
+
+
+  function PropTypeError(message) {
+    this.message = message;
+    this.stack = '';
+  } // Make `instanceof Error` still work for returned errors.
+
+
+  PropTypeError.prototype = Error.prototype;
+
+  function createChainableTypeChecker(validate) {
+    if ("development" !== 'production') {
+      var manualPropTypeCallCache = {};
+      var manualPropTypeWarningCount = 0;
+    }
+
+    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
+      componentName = componentName || ANONYMOUS;
+      propFullName = propFullName || propName;
+
+      if (secret !== ReactPropTypesSecret) {
+        if (throwOnDirectAccess) {
+          // New behavior only for users of `prop-types` package
+          var err = new Error('Calling PropTypes validators directly is not supported by the `prop-types` package. ' + 'Use `PropTypes.checkPropTypes()` to call them. ' + 'Read more at http://fb.me/use-check-prop-types');
+          err.name = 'Invariant Violation';
+          throw err;
+        } else if ("development" !== 'production' && typeof console !== 'undefined') {
+          // Old behavior for people using React.PropTypes
+          var cacheKey = componentName + ':' + propName;
+
+          if (!manualPropTypeCallCache[cacheKey] && // Avoid spamming the console because they are often not actionable except for lib authors
+          manualPropTypeWarningCount < 3) {
+            printWarning('You are manually calling a React.PropTypes validation ' + 'function for the `' + propFullName + '` prop on `' + componentName + '`. This is deprecated ' + 'and will throw in the standalone `prop-types` package. ' + 'You may be seeing this warning due to a third-party PropTypes ' + 'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.');
+            manualPropTypeCallCache[cacheKey] = true;
+            manualPropTypeWarningCount++;
+          }
+        }
+      }
+
+      if (props[propName] == null) {
+        if (isRequired) {
+          if (props[propName] === null) {
+            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
+          }
+
+          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
+        }
+
+        return null;
+      } else {
+        return validate(props, propName, componentName, location, propFullName);
+      }
+    }
+
+    var chainedCheckType = checkType.bind(null, false);
+    chainedCheckType.isRequired = checkType.bind(null, true);
+    return chainedCheckType;
+  }
+
+  function createPrimitiveTypeChecker(expectedType) {
+    function validate(props, propName, componentName, location, propFullName, secret) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+
+      if (propType !== expectedType) {
+        // `propValue` being instance of, say, date/regexp, pass the 'object'
+        // check, but we can offer a more precise error message here rather than
+        // 'of type `object`'.
+        var preciseType = getPreciseType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
+      }
+
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function createAnyTypeChecker() {
+    return createChainableTypeChecker(emptyFunctionThatReturnsNull);
+  }
+
+  function createArrayOfTypeChecker(typeChecker) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (typeof typeChecker !== 'function') {
+        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
+      }
+
+      var propValue = props[propName];
+
+      if (!Array.isArray(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
+      }
+
+      for (var i = 0; i < propValue.length; i++) {
+        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret);
+
+        if (error instanceof Error) {
+          return error;
+        }
+      }
+
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function createElementTypeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+
+      if (!isValidElement(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
+      }
+
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function createElementTypeTypeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+
+      if (!ReactIs.isValidElementType(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
+      }
+
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function createInstanceTypeChecker(expectedClass) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (!(props[propName] instanceof expectedClass)) {
+        var expectedClassName = expectedClass.name || ANONYMOUS;
+        var actualClassName = getClassName(props[propName]);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
+      }
+
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function createEnumTypeChecker(expectedValues) {
+    if (!Array.isArray(expectedValues)) {
+      if ("development" !== 'production') {
+        if (arguments.length > 1) {
+          printWarning('Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' + 'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).');
+        } else {
+          printWarning('Invalid argument supplied to oneOf, expected an array.');
+        }
+      }
+
+      return emptyFunctionThatReturnsNull;
+    }
+
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+
+      for (var i = 0; i < expectedValues.length; i++) {
+        if (is(propValue, expectedValues[i])) {
+          return null;
+        }
+      }
+
+      var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
+        var type = getPreciseType(value);
+
+        if (type === 'symbol') {
+          return String(value);
+        }
+
+        return value;
+      });
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function createObjectOfTypeChecker(typeChecker) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (typeof typeChecker !== 'function') {
+        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
+      }
+
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
+      }
+
+      for (var key in propValue) {
+        if (has(propValue, key)) {
+          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+
+          if (error instanceof Error) {
+            return error;
+          }
+        }
+      }
+
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function createUnionTypeChecker(arrayOfTypeCheckers) {
+    if (!Array.isArray(arrayOfTypeCheckers)) {
+      "development" !== 'production' ? printWarning('Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
+      return emptyFunctionThatReturnsNull;
+    }
+
+    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+      var checker = arrayOfTypeCheckers[i];
+
+      if (typeof checker !== 'function') {
+        printWarning('Invalid argument supplied to oneOfType. Expected an array of check functions, but ' + 'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.');
+        return emptyFunctionThatReturnsNull;
+      }
+    }
+
+    function validate(props, propName, componentName, location, propFullName) {
+      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+        var checker = arrayOfTypeCheckers[i];
+
+        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret) == null) {
+          return null;
+        }
+      }
+
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function createNodeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (!isNode(props[propName])) {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
+      }
+
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function createShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      }
+
+      for (var key in shapeTypes) {
+        var checker = shapeTypes[key];
+
+        if (!checker) {
+          continue;
+        }
+
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+
+        if (error) {
+          return error;
+        }
+      }
+
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function createStrictShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      } // We need to check all keys in case some are required but missing from
+      // props.
+
+
+      var allKeys = assign({}, props[propName], shapeTypes);
+
+      for (var key in allKeys) {
+        var checker = shapeTypes[key];
+
+        if (!checker) {
+          return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' + '\nBad object: ' + JSON.stringify(props[propName], null, '  ') + '\nValid keys: ' + JSON.stringify(Object.keys(shapeTypes), null, '  '));
+        }
+
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+
+        if (error) {
+          return error;
+        }
+      }
+
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function isNode(propValue) {
+    switch (typeof propValue) {
+      case 'number':
+      case 'string':
+      case 'undefined':
+        return true;
+
+      case 'boolean':
+        return !propValue;
+
+      case 'object':
+        if (Array.isArray(propValue)) {
+          return propValue.every(isNode);
+        }
+
+        if (propValue === null || isValidElement(propValue)) {
+          return true;
+        }
+
+        var iteratorFn = getIteratorFn(propValue);
+
+        if (iteratorFn) {
+          var iterator = iteratorFn.call(propValue);
+          var step;
+
+          if (iteratorFn !== propValue.entries) {
+            while (!(step = iterator.next()).done) {
+              if (!isNode(step.value)) {
+                return false;
+              }
+            }
+          } else {
+            // Iterator will provide entry [k,v] tuples rather than values.
+            while (!(step = iterator.next()).done) {
+              var entry = step.value;
+
+              if (entry) {
+                if (!isNode(entry[1])) {
+                  return false;
+                }
+              }
+            }
+          }
+        } else {
+          return false;
+        }
+
+        return true;
+
+      default:
+        return false;
+    }
+  }
+
+  function isSymbol(propType, propValue) {
+    // Native Symbol.
+    if (propType === 'symbol') {
+      return true;
+    } // falsy value can't be a Symbol
+
+
+    if (!propValue) {
+      return false;
+    } // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
+
+
+    if (propValue['@@toStringTag'] === 'Symbol') {
+      return true;
+    } // Fallback for non-spec compliant Symbols which are polyfilled.
+
+
+    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
+      return true;
+    }
+
+    return false;
+  } // Equivalent of `typeof` but with special handling for array and regexp.
+
+
+  function getPropType(propValue) {
+    var propType = typeof propValue;
+
+    if (Array.isArray(propValue)) {
+      return 'array';
+    }
+
+    if (propValue instanceof RegExp) {
+      // Old webkits (at least until Android 4.0) return 'function' rather than
+      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
+      // passes PropTypes.object.
+      return 'object';
+    }
+
+    if (isSymbol(propType, propValue)) {
+      return 'symbol';
+    }
+
+    return propType;
+  } // This handles more types than `getPropType`. Only used for error messages.
+  // See `createPrimitiveTypeChecker`.
+
+
+  function getPreciseType(propValue) {
+    if (typeof propValue === 'undefined' || propValue === null) {
+      return '' + propValue;
+    }
+
+    var propType = getPropType(propValue);
+
+    if (propType === 'object') {
+      if (propValue instanceof Date) {
+        return 'date';
+      } else if (propValue instanceof RegExp) {
+        return 'regexp';
+      }
+    }
+
+    return propType;
+  } // Returns a string that is postfixed to a warning about an invalid type.
+  // For example, "undefined" or "of type array"
+
+
+  function getPostfixForTypeWarning(value) {
+    var type = getPreciseType(value);
+
+    switch (type) {
+      case 'array':
+      case 'object':
+        return 'an ' + type;
+
+      case 'boolean':
+      case 'date':
+      case 'regexp':
+        return 'a ' + type;
+
+      default:
+        return type;
+    }
+  } // Returns class name of the object, if any.
+
+
+  function getClassName(propValue) {
+    if (!propValue.constructor || !propValue.constructor.name) {
+      return ANONYMOUS;
+    }
+
+    return propValue.constructor.name;
+  }
+
+  ReactPropTypes.checkPropTypes = checkPropTypes;
+  ReactPropTypes.resetWarningCache = checkPropTypes.resetWarningCache;
+  ReactPropTypes.PropTypes = ReactPropTypes;
+  return ReactPropTypes;
+};
+},{"react-is":"node_modules/react-is/index.js","object-assign":"node_modules/object-assign/index.js","./lib/ReactPropTypesSecret":"node_modules/prop-types/lib/ReactPropTypesSecret.js","./checkPropTypes":"node_modules/prop-types/checkPropTypes.js"}],"node_modules/prop-types/index.js":[function(require,module,exports) {
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+if ("development" !== 'production') {
+  var ReactIs = require('react-is'); // By explicitly using `prop-types` you are opting into new development behavior.
+  // http://fb.me/prop-types-in-prod
+
+
+  var throwOnDirectAccess = true;
+  module.exports = require('./factoryWithTypeCheckers')(ReactIs.isElement, throwOnDirectAccess);
+} else {
+  // By explicitly using `prop-types` you are opting into new production behavior.
+  // http://fb.me/prop-types-in-prod
+  module.exports = require('./factoryWithThrowingShims')();
+}
+},{"react-is":"node_modules/react-is/index.js","./factoryWithTypeCheckers":"node_modules/prop-types/factoryWithTypeCheckers.js"}],"node_modules/fast-deep-equal/index.js":[function(require,module,exports) {
+'use strict';
+
+// do not edit .js files directly - edit src/index.jst
+
+
+
+module.exports = function equal(a, b) {
+  if (a === b) return true;
+
+  if (a && b && typeof a == 'object' && typeof b == 'object') {
+    if (a.constructor !== b.constructor) return false;
+
+    var length, i, keys;
+    if (Array.isArray(a)) {
+      length = a.length;
+      if (length != b.length) return false;
+      for (i = length; i-- !== 0;)
+        if (!equal(a[i], b[i])) return false;
+      return true;
+    }
+
+
+
+    if (a.constructor === RegExp) return a.source === b.source && a.flags === b.flags;
+    if (a.valueOf !== Object.prototype.valueOf) return a.valueOf() === b.valueOf();
+    if (a.toString !== Object.prototype.toString) return a.toString() === b.toString();
+
+    keys = Object.keys(a);
+    length = keys.length;
+    if (length !== Object.keys(b).length) return false;
+
+    for (i = length; i-- !== 0;)
+      if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
+
+    for (i = length; i-- !== 0;) {
+      var key = keys[i];
+
+      if (!equal(a[key], b[key])) return false;
+    }
+
+    return true;
+  }
+
+  // true if both NaN, false otherwise
+  return a!==a && b!==b;
+};
+
+},{}],"node_modules/sister/src/sister.js":[function(require,module,exports) {
+'use strict';
+
+var Sister;
+
+/**
+* @link https://github.com/gajus/sister for the canonical source repository
+* @license https://github.com/gajus/sister/blob/master/LICENSE BSD 3-Clause
+*/
+Sister = function () {
+    var sister = {},
+        events = {};
+
+    /**
+     * @name handler
+     * @function
+     * @param {Object} data Event data.
+     */
+
+    /**
+     * @param {String} name Event name.
+     * @param {handler} handler
+     * @return {listener}
+     */
+    sister.on = function (name, handler) {
+        var listener = {name: name, handler: handler};
+        events[name] = events[name] || [];
+        events[name].unshift(listener);
+        return listener;
+    };
+
+    /**
+     * @param {listener}
+     */
+    sister.off = function (listener) {
+        var index = events[listener.name].indexOf(listener);
+
+        if (index !== -1) {
+            events[listener.name].splice(index, 1);
+        }
+    };
+
+    /**
+     * @param {String} name Event name.
+     * @param {Object} data Event data.
+     */
+    sister.trigger = function (name, data) {
+        var listeners = events[name],
+            i;
+
+        if (listeners) {
+            i = listeners.length;
+            while (i--) {
+                listeners[i].handler(data);
+            }
+        }
+    };
+
+    return sister;
+};
+
+module.exports = Sister;
+
+},{}],"node_modules/load-script/index.js":[function(require,module,exports) {
+
+module.exports = function load (src, opts, cb) {
+  var head = document.head || document.getElementsByTagName('head')[0]
+  var script = document.createElement('script')
+
+  if (typeof opts === 'function') {
+    cb = opts
+    opts = {}
+  }
+
+  opts = opts || {}
+  cb = cb || function() {}
+
+  script.type = opts.type || 'text/javascript'
+  script.charset = opts.charset || 'utf8';
+  script.async = 'async' in opts ? !!opts.async : true
+  script.src = src
+
+  if (opts.attrs) {
+    setAttributes(script, opts.attrs)
+  }
+
+  if (opts.text) {
+    script.text = '' + opts.text
+  }
+
+  var onend = 'onload' in script ? stdOnEnd : ieOnEnd
+  onend(script, cb)
+
+  // some good legacy browsers (firefox) fail the 'in' detection above
+  // so as a fallback we always set onload
+  // old IE will ignore this and new IE will set onload
+  if (!script.onload) {
+    stdOnEnd(script, cb);
+  }
+
+  head.appendChild(script)
+}
+
+function setAttributes(script, attrs) {
+  for (var attr in attrs) {
+    script.setAttribute(attr, attrs[attr]);
+  }
+}
+
+function stdOnEnd (script, cb) {
+  script.onload = function () {
+    this.onerror = this.onload = null
+    cb(null, script)
+  }
+  script.onerror = function () {
+    // this.onload = null here is necessary
+    // because even IE9 works not like others
+    this.onerror = this.onload = null
+    cb(new Error('Failed to load ' + this.src), script)
+  }
+}
+
+function ieOnEnd (script, cb) {
+  script.onreadystatechange = function () {
+    if (this.readyState != 'complete' && this.readyState != 'loaded') return
+    this.onreadystatechange = null
+    cb(null, script) // there is no way to catch loading errors in IE8
+  }
+}
+
+},{}],"node_modules/youtube-player/dist/loadYouTubeIframeApi.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _loadScript = require('load-script');
+
+var _loadScript2 = _interopRequireDefault(_loadScript);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (emitter) {
+  /**
+   * A promise that is resolved when window.onYouTubeIframeAPIReady is called.
+   * The promise is resolved with a reference to window.YT object.
+   */
+  var iframeAPIReady = new Promise(function (resolve) {
+    if (window.YT && window.YT.Player && window.YT.Player instanceof Function) {
+      resolve(window.YT);
+
+      return;
+    } else {
+      var protocol = window.location.protocol === 'http:' ? 'http:' : 'https:';
+
+      (0, _loadScript2.default)(protocol + '//www.youtube.com/iframe_api', function (error) {
+        if (error) {
+          emitter.trigger('error', error);
+        }
+      });
+    }
+
+    var previous = window.onYouTubeIframeAPIReady;
+
+    // The API will call this function when page has finished downloading
+    // the JavaScript for the player API.
+    window.onYouTubeIframeAPIReady = function () {
+      if (previous) {
+        previous();
+      }
+
+      resolve(window.YT);
+    };
+  });
+
+  return iframeAPIReady;
+};
+
+module.exports = exports['default'];
+},{"load-script":"node_modules/load-script/index.js"}],"node_modules/ms/index.js":[function(require,module,exports) {
+/**
+ * Helpers.
+ */
+
+var s = 1000;
+var m = s * 60;
+var h = m * 60;
+var d = h * 24;
+var y = d * 365.25;
+
+/**
+ * Parse or format the given `val`.
+ *
+ * Options:
+ *
+ *  - `long` verbose formatting [false]
+ *
+ * @param {String|Number} val
+ * @param {Object} [options]
+ * @throws {Error} throw an error if val is not a non-empty string or a number
+ * @return {String|Number}
+ * @api public
+ */
+
+module.exports = function(val, options) {
+  options = options || {};
+  var type = typeof val;
+  if (type === 'string' && val.length > 0) {
+    return parse(val);
+  } else if (type === 'number' && isNaN(val) === false) {
+    return options.long ? fmtLong(val) : fmtShort(val);
+  }
+  throw new Error(
+    'val is not a non-empty string or a valid number. val=' +
+      JSON.stringify(val)
+  );
+};
+
+/**
+ * Parse the given `str` and return milliseconds.
+ *
+ * @param {String} str
+ * @return {Number}
+ * @api private
+ */
+
+function parse(str) {
+  str = String(str);
+  if (str.length > 100) {
+    return;
+  }
+  var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(
+    str
+  );
+  if (!match) {
+    return;
+  }
+  var n = parseFloat(match[1]);
+  var type = (match[2] || 'ms').toLowerCase();
+  switch (type) {
+    case 'years':
+    case 'year':
+    case 'yrs':
+    case 'yr':
+    case 'y':
+      return n * y;
+    case 'days':
+    case 'day':
+    case 'd':
+      return n * d;
+    case 'hours':
+    case 'hour':
+    case 'hrs':
+    case 'hr':
+    case 'h':
+      return n * h;
+    case 'minutes':
+    case 'minute':
+    case 'mins':
+    case 'min':
+    case 'm':
+      return n * m;
+    case 'seconds':
+    case 'second':
+    case 'secs':
+    case 'sec':
+    case 's':
+      return n * s;
+    case 'milliseconds':
+    case 'millisecond':
+    case 'msecs':
+    case 'msec':
+    case 'ms':
+      return n;
+    default:
+      return undefined;
+  }
+}
+
+/**
+ * Short format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function fmtShort(ms) {
+  if (ms >= d) {
+    return Math.round(ms / d) + 'd';
+  }
+  if (ms >= h) {
+    return Math.round(ms / h) + 'h';
+  }
+  if (ms >= m) {
+    return Math.round(ms / m) + 'm';
+  }
+  if (ms >= s) {
+    return Math.round(ms / s) + 's';
+  }
+  return ms + 'ms';
+}
+
+/**
+ * Long format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function fmtLong(ms) {
+  return plural(ms, d, 'day') ||
+    plural(ms, h, 'hour') ||
+    plural(ms, m, 'minute') ||
+    plural(ms, s, 'second') ||
+    ms + ' ms';
+}
+
+/**
+ * Pluralization helper.
+ */
+
+function plural(ms, n, name) {
+  if (ms < n) {
+    return;
+  }
+  if (ms < n * 1.5) {
+    return Math.floor(ms / n) + ' ' + name;
+  }
+  return Math.ceil(ms / n) + ' ' + name + 's';
+}
+
+},{}],"node_modules/youtube-player/node_modules/debug/src/debug.js":[function(require,module,exports) {
+
+/**
+ * This is the common logic for both the Node.js and web browser
+ * implementations of `debug()`.
+ *
+ * Expose `debug()` as the module.
+ */
+
+exports = module.exports = createDebug.debug = createDebug['default'] = createDebug;
+exports.coerce = coerce;
+exports.disable = disable;
+exports.enable = enable;
+exports.enabled = enabled;
+exports.humanize = require('ms');
+
+/**
+ * The currently active debug mode names, and names to skip.
+ */
+
+exports.names = [];
+exports.skips = [];
+
+/**
+ * Map of special "%n" handling functions, for the debug "format" argument.
+ *
+ * Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
+ */
+
+exports.formatters = {};
+
+/**
+ * Previous log timestamp.
+ */
+
+var prevTime;
+
+/**
+ * Select a color.
+ * @param {String} namespace
+ * @return {Number}
+ * @api private
+ */
+
+function selectColor(namespace) {
+  var hash = 0, i;
+
+  for (i in namespace) {
+    hash  = ((hash << 5) - hash) + namespace.charCodeAt(i);
+    hash |= 0; // Convert to 32bit integer
+  }
+
+  return exports.colors[Math.abs(hash) % exports.colors.length];
+}
+
+/**
+ * Create a debugger with the given `namespace`.
+ *
+ * @param {String} namespace
+ * @return {Function}
+ * @api public
+ */
+
+function createDebug(namespace) {
+
+  function debug() {
+    // disabled?
+    if (!debug.enabled) return;
+
+    var self = debug;
+
+    // set `diff` timestamp
+    var curr = +new Date();
+    var ms = curr - (prevTime || curr);
+    self.diff = ms;
+    self.prev = prevTime;
+    self.curr = curr;
+    prevTime = curr;
+
+    // turn the `arguments` into a proper Array
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+
+    args[0] = exports.coerce(args[0]);
+
+    if ('string' !== typeof args[0]) {
+      // anything else let's inspect with %O
+      args.unshift('%O');
+    }
+
+    // apply any `formatters` transformations
+    var index = 0;
+    args[0] = args[0].replace(/%([a-zA-Z%])/g, function(match, format) {
+      // if we encounter an escaped % then don't increase the array index
+      if (match === '%%') return match;
+      index++;
+      var formatter = exports.formatters[format];
+      if ('function' === typeof formatter) {
+        var val = args[index];
+        match = formatter.call(self, val);
+
+        // now we need to remove `args[index]` since it's inlined in the `format`
+        args.splice(index, 1);
+        index--;
+      }
+      return match;
+    });
+
+    // apply env-specific formatting (colors, etc.)
+    exports.formatArgs.call(self, args);
+
+    var logFn = debug.log || exports.log || console.log.bind(console);
+    logFn.apply(self, args);
+  }
+
+  debug.namespace = namespace;
+  debug.enabled = exports.enabled(namespace);
+  debug.useColors = exports.useColors();
+  debug.color = selectColor(namespace);
+
+  // env-specific initialization logic for debug instances
+  if ('function' === typeof exports.init) {
+    exports.init(debug);
+  }
+
+  return debug;
+}
+
+/**
+ * Enables a debug mode by namespaces. This can include modes
+ * separated by a colon and wildcards.
+ *
+ * @param {String} namespaces
+ * @api public
+ */
+
+function enable(namespaces) {
+  exports.save(namespaces);
+
+  exports.names = [];
+  exports.skips = [];
+
+  var split = (typeof namespaces === 'string' ? namespaces : '').split(/[\s,]+/);
+  var len = split.length;
+
+  for (var i = 0; i < len; i++) {
+    if (!split[i]) continue; // ignore empty strings
+    namespaces = split[i].replace(/\*/g, '.*?');
+    if (namespaces[0] === '-') {
+      exports.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
+    } else {
+      exports.names.push(new RegExp('^' + namespaces + '$'));
+    }
+  }
+}
+
+/**
+ * Disable debug output.
+ *
+ * @api public
+ */
+
+function disable() {
+  exports.enable('');
+}
+
+/**
+ * Returns true if the given mode name is enabled, false otherwise.
+ *
+ * @param {String} name
+ * @return {Boolean}
+ * @api public
+ */
+
+function enabled(name) {
+  var i, len;
+  for (i = 0, len = exports.skips.length; i < len; i++) {
+    if (exports.skips[i].test(name)) {
+      return false;
+    }
+  }
+  for (i = 0, len = exports.names.length; i < len; i++) {
+    if (exports.names[i].test(name)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Coerce `val`.
+ *
+ * @param {Mixed} val
+ * @return {Mixed}
+ * @api private
+ */
+
+function coerce(val) {
+  if (val instanceof Error) return val.stack || val.message;
+  return val;
+}
+
+},{"ms":"node_modules/ms/index.js"}],"node_modules/youtube-player/node_modules/debug/src/browser.js":[function(require,module,exports) {
+var process = require("process");
+/**
+ * This is the web browser implementation of `debug()`.
+ *
+ * Expose `debug()` as the module.
+ */
+exports = module.exports = require('./debug');
+exports.log = log;
+exports.formatArgs = formatArgs;
+exports.save = save;
+exports.load = load;
+exports.useColors = useColors;
+exports.storage = 'undefined' != typeof chrome && 'undefined' != typeof chrome.storage ? chrome.storage.local : localstorage();
+/**
+ * Colors.
+ */
+
+exports.colors = ['lightseagreen', 'forestgreen', 'goldenrod', 'dodgerblue', 'darkorchid', 'crimson'];
+/**
+ * Currently only WebKit-based Web Inspectors, Firefox >= v31,
+ * and the Firebug extension (any Firefox version) are known
+ * to support "%c" CSS customizations.
+ *
+ * TODO: add a `localStorage` variable to explicitly enable/disable colors
+ */
+
+function useColors() {
+  // NB: In an Electron preload script, document will be defined but not fully
+  // initialized. Since we know we're in Chrome, we'll just detect this case
+  // explicitly
+  if (typeof window !== 'undefined' && window.process && window.process.type === 'renderer') {
+    return true;
+  } // is webkit? http://stackoverflow.com/a/16459606/376773
+  // document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
+
+
+  return typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || // is firebug? http://stackoverflow.com/a/398120/376773
+  typeof window !== 'undefined' && window.console && (window.console.firebug || window.console.exception && window.console.table) || // is firefox >= v31?
+  // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+  typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31 || // double check webkit in userAgent just in case we are in a worker
+  typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/);
+}
+/**
+ * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
+ */
+
+
+exports.formatters.j = function (v) {
+  try {
+    return JSON.stringify(v);
+  } catch (err) {
+    return '[UnexpectedJSONParseError]: ' + err.message;
+  }
+};
+/**
+ * Colorize log arguments if enabled.
+ *
+ * @api public
+ */
+
+
+function formatArgs(args) {
+  var useColors = this.useColors;
+  args[0] = (useColors ? '%c' : '') + this.namespace + (useColors ? ' %c' : ' ') + args[0] + (useColors ? '%c ' : ' ') + '+' + exports.humanize(this.diff);
+  if (!useColors) return;
+  var c = 'color: ' + this.color;
+  args.splice(1, 0, c, 'color: inherit'); // the final "%c" is somewhat tricky, because there could be other
+  // arguments passed either before or after the %c, so we need to
+  // figure out the correct index to insert the CSS into
+
+  var index = 0;
+  var lastC = 0;
+  args[0].replace(/%[a-zA-Z%]/g, function (match) {
+    if ('%%' === match) return;
+    index++;
+
+    if ('%c' === match) {
+      // we only are interested in the *last* %c
+      // (the user may have provided their own)
+      lastC = index;
+    }
+  });
+  args.splice(lastC, 0, c);
+}
+/**
+ * Invokes `console.log()` when available.
+ * No-op when `console.log` is not a "function".
+ *
+ * @api public
+ */
+
+
+function log() {
+  // this hackery is required for IE8/9, where
+  // the `console.log` function doesn't have 'apply'
+  return 'object' === typeof console && console.log && Function.prototype.apply.call(console.log, console, arguments);
+}
+/**
+ * Save `namespaces`.
+ *
+ * @param {String} namespaces
+ * @api private
+ */
+
+
+function save(namespaces) {
+  try {
+    if (null == namespaces) {
+      exports.storage.removeItem('debug');
+    } else {
+      exports.storage.debug = namespaces;
+    }
+  } catch (e) {}
+}
+/**
+ * Load `namespaces`.
+ *
+ * @return {String} returns the previously persisted debug modes
+ * @api private
+ */
+
+
+function load() {
+  var r;
+
+  try {
+    r = exports.storage.debug;
+  } catch (e) {} // If debug isn't set in LS, and we're in Electron, try to load $DEBUG
+
+
+  if (!r && typeof process !== 'undefined' && 'env' in process) {
+    r = undefined;
+  }
+
+  return r;
+}
+/**
+ * Enable namespaces listed in `localStorage.debug` initially.
+ */
+
+
+exports.enable(load());
+/**
+ * Localstorage attempts to return the localstorage.
+ *
+ * This is necessary because safari throws
+ * when a user disables cookies/localstorage
+ * and you attempt to access it.
+ *
+ * @return {LocalStorage}
+ * @api private
+ */
+
+function localstorage() {
+  try {
+    return window.localStorage;
+  } catch (e) {}
+}
+},{"./debug":"node_modules/youtube-player/node_modules/debug/src/debug.js","process":"../../AppData/Roaming/npm/node_modules/parcel-bundler/node_modules/process/browser.js"}],"node_modules/youtube-player/dist/functionNames.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+
+/**
+ * @see https://developers.google.com/youtube/iframe_api_reference#Functions
+ */
+exports.default = ['cueVideoById', 'loadVideoById', 'cueVideoByUrl', 'loadVideoByUrl', 'playVideo', 'pauseVideo', 'stopVideo', 'getVideoLoadedFraction', 'cuePlaylist', 'loadPlaylist', 'nextVideo', 'previousVideo', 'playVideoAt', 'setShuffle', 'setLoop', 'getPlaylist', 'getPlaylistIndex', 'setOption', 'mute', 'unMute', 'isMuted', 'setVolume', 'getVolume', 'seekTo', 'getPlayerState', 'getPlaybackRate', 'setPlaybackRate', 'getAvailablePlaybackRates', 'getPlaybackQuality', 'setPlaybackQuality', 'getAvailableQualityLevels', 'getCurrentTime', 'getDuration', 'removeEventListener', 'getVideoUrl', 'getVideoEmbedCode', 'getOptions', 'getOption', 'addEventListener', 'destroy', 'setSize', 'getIframe'];
+module.exports = exports['default'];
+},{}],"node_modules/youtube-player/dist/eventNames.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+
+/**
+ * @see https://developers.google.com/youtube/iframe_api_reference#Events
+ * `volumeChange` is not officially supported but seems to work
+ * it emits an object: `{volume: 82.6923076923077, muted: false}`
+ */
+exports.default = ['ready', 'stateChange', 'playbackQualityChange', 'playbackRateChange', 'error', 'apiChange', 'volumeChange'];
+module.exports = exports['default'];
+},{}],"node_modules/youtube-player/dist/constants/PlayerStates.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = FilmItem;
+exports.default = {
+  BUFFERING: 3,
+  ENDED: 0,
+  PAUSED: 2,
+  PLAYING: 1,
+  UNSTARTED: -1,
+  VIDEO_CUED: 5
+};
+module.exports = exports["default"];
+},{}],"node_modules/youtube-player/dist/FunctionStateMap.js":[function(require,module,exports) {
+'use strict';
 
-var _react = _interopRequireDefault(require("react"));
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _PlayerStates = require('./constants/PlayerStates');
+
+var _PlayerStates2 = _interopRequireDefault(_PlayerStates);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var IMG_BASE_URL = "https://image.tmdb.org/t/p/original/";
+exports.default = {
+  pauseVideo: {
+    acceptableStates: [_PlayerStates2.default.ENDED, _PlayerStates2.default.PAUSED],
+    stateChangeRequired: false
+  },
+  playVideo: {
+    acceptableStates: [_PlayerStates2.default.ENDED, _PlayerStates2.default.PLAYING],
+    stateChangeRequired: false
+  },
+  seekTo: {
+    acceptableStates: [_PlayerStates2.default.ENDED, _PlayerStates2.default.PLAYING, _PlayerStates2.default.PAUSED],
+    stateChangeRequired: true,
 
-function FilmItem(_ref) {
-  var movie = _ref.movie;
-  var movieName = movie.name || movie.original_title;
-  return /*#__PURE__*/_react.default.createElement("div", {
-    className: "filmItem"
-  }, /*#__PURE__*/_react.default.createElement("div", {
-    className: "filmImg"
-  }, /*#__PURE__*/_react.default.createElement("img", {
-    src: IMG_BASE_URL + movie.poster_path,
-    alt: "Movie : " + movieName
-  })));
+    // TRICKY: `seekTo` may not cause a state change if no buffering is
+    // required.
+    timeout: 3000
+  }
+};
+module.exports = exports['default'];
+},{"./constants/PlayerStates":"node_modules/youtube-player/dist/constants/PlayerStates.js"}],"node_modules/youtube-player/dist/YouTubePlayer.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _debug = require('debug');
+
+var _debug2 = _interopRequireDefault(_debug);
+
+var _functionNames = require('./functionNames');
+
+var _functionNames2 = _interopRequireDefault(_functionNames);
+
+var _eventNames = require('./eventNames');
+
+var _eventNames2 = _interopRequireDefault(_eventNames);
+
+var _FunctionStateMap = require('./FunctionStateMap');
+
+var _FunctionStateMap2 = _interopRequireDefault(_FunctionStateMap);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/* eslint-disable promise/prefer-await-to-then */
+
+var debug = (0, _debug2.default)('youtube-player');
+
+var YouTubePlayer = {};
+
+/**
+ * Construct an object that defines an event handler for all of the YouTube
+ * player events. Proxy captured events through an event emitter.
+ *
+ * @todo Capture event parameters.
+ * @see https://developers.google.com/youtube/iframe_api_reference#Events
+ */
+YouTubePlayer.proxyEvents = function (emitter) {
+  var events = {};
+
+  var _loop = function _loop(eventName) {
+    var onEventName = 'on' + eventName.slice(0, 1).toUpperCase() + eventName.slice(1);
+
+    events[onEventName] = function (event) {
+      debug('event "%s"', onEventName, event);
+
+      emitter.trigger(eventName, event);
+    };
+  };
+
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = _eventNames2.default[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var eventName = _step.value;
+
+      _loop(eventName);
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  return events;
+};
+
+/**
+ * Delays player API method execution until player state is ready.
+ *
+ * @todo Proxy all of the methods using Object.keys.
+ * @todo See TRICKY below.
+ * @param playerAPIReady Promise that resolves when player is ready.
+ * @param strictState A flag designating whether or not to wait for
+ * an acceptable state when calling supported functions.
+ * @returns {Object}
+ */
+YouTubePlayer.promisifyPlayer = function (playerAPIReady) {
+  var strictState = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  var functions = {};
+
+  var _loop2 = function _loop2(functionName) {
+    if (strictState && _FunctionStateMap2.default[functionName]) {
+      functions[functionName] = function () {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return playerAPIReady.then(function (player) {
+          var stateInfo = _FunctionStateMap2.default[functionName];
+          var playerState = player.getPlayerState();
+
+          // eslint-disable-next-line no-warning-comments
+          // TODO: Just spread the args into the function once Babel is fixed:
+          // https://github.com/babel/babel/issues/4270
+          //
+          // eslint-disable-next-line prefer-spread
+          var value = player[functionName].apply(player, args);
+
+          // TRICKY: For functions like `seekTo`, a change in state must be
+          // triggered given that the resulting state could match the initial
+          // state.
+          if (stateInfo.stateChangeRequired ||
+
+          // eslint-disable-next-line no-extra-parens
+          Array.isArray(stateInfo.acceptableStates) && stateInfo.acceptableStates.indexOf(playerState) === -1) {
+            return new Promise(function (resolve) {
+              var onPlayerStateChange = function onPlayerStateChange() {
+                var playerStateAfterChange = player.getPlayerState();
+
+                var timeout = void 0;
+
+                if (typeof stateInfo.timeout === 'number') {
+                  timeout = setTimeout(function () {
+                    player.removeEventListener('onStateChange', onPlayerStateChange);
+
+                    resolve();
+                  }, stateInfo.timeout);
+                }
+
+                if (Array.isArray(stateInfo.acceptableStates) && stateInfo.acceptableStates.indexOf(playerStateAfterChange) !== -1) {
+                  player.removeEventListener('onStateChange', onPlayerStateChange);
+
+                  clearTimeout(timeout);
+
+                  resolve();
+                }
+              };
+
+              player.addEventListener('onStateChange', onPlayerStateChange);
+            }).then(function () {
+              return value;
+            });
+          }
+
+          return value;
+        });
+      };
+    } else {
+      functions[functionName] = function () {
+        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+
+        return playerAPIReady.then(function (player) {
+          // eslint-disable-next-line no-warning-comments
+          // TODO: Just spread the args into the function once Babel is fixed:
+          // https://github.com/babel/babel/issues/4270
+          //
+          // eslint-disable-next-line prefer-spread
+          return player[functionName].apply(player, args);
+        });
+      };
+    }
+  };
+
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
+
+  try {
+    for (var _iterator2 = _functionNames2.default[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var functionName = _step2.value;
+
+      _loop2(functionName);
+    }
+  } catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+        _iterator2.return();
+      }
+    } finally {
+      if (_didIteratorError2) {
+        throw _iteratorError2;
+      }
+    }
+  }
+
+  return functions;
+};
+
+exports.default = YouTubePlayer;
+module.exports = exports['default'];
+},{"debug":"node_modules/youtube-player/node_modules/debug/src/browser.js","./functionNames":"node_modules/youtube-player/dist/functionNames.js","./eventNames":"node_modules/youtube-player/dist/eventNames.js","./FunctionStateMap":"node_modules/youtube-player/dist/FunctionStateMap.js"}],"node_modules/youtube-player/dist/index.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _sister = require('sister');
+
+var _sister2 = _interopRequireDefault(_sister);
+
+var _loadYouTubeIframeApi = require('./loadYouTubeIframeApi');
+
+var _loadYouTubeIframeApi2 = _interopRequireDefault(_loadYouTubeIframeApi);
+
+var _YouTubePlayer = require('./YouTubePlayer');
+
+var _YouTubePlayer2 = _interopRequireDefault(_YouTubePlayer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @typedef YT.Player
+ * @see https://developers.google.com/youtube/iframe_api_reference
+ * */
+
+/**
+ * @see https://developers.google.com/youtube/iframe_api_reference#Loading_a_Video_Player
+ */
+var youtubeIframeAPI = void 0;
+
+/**
+ * A factory function used to produce an instance of YT.Player and queue function calls and proxy events of the resulting object.
+ *
+ * @param maybeElementId Either An existing YT.Player instance,
+ * the DOM element or the id of the HTML element where the API will insert an <iframe>.
+ * @param options See `options` (Ignored when using an existing YT.Player instance).
+ * @param strictState A flag designating whether or not to wait for
+ * an acceptable state when calling supported functions. Default: `false`.
+ * See `FunctionStateMap.js` for supported functions and acceptable states.
+ */
+
+exports.default = function (maybeElementId) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var strictState = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+  var emitter = (0, _sister2.default)();
+
+  if (!youtubeIframeAPI) {
+    youtubeIframeAPI = (0, _loadYouTubeIframeApi2.default)(emitter);
+  }
+
+  if (options.events) {
+    throw new Error('Event handlers cannot be overwritten.');
+  }
+
+  if (typeof maybeElementId === 'string' && !document.getElementById(maybeElementId)) {
+    throw new Error('Element "' + maybeElementId + '" does not exist.');
+  }
+
+  options.events = _YouTubePlayer2.default.proxyEvents(emitter);
+
+  var playerAPIReady = new Promise(function (resolve) {
+    if ((typeof maybeElementId === 'undefined' ? 'undefined' : _typeof(maybeElementId)) === 'object' && maybeElementId.playVideo instanceof Function) {
+      var player = maybeElementId;
+
+      resolve(player);
+    } else {
+      // asume maybeElementId can be rendered inside
+      // eslint-disable-next-line promise/catch-or-return
+      youtubeIframeAPI.then(function (YT) {
+        // eslint-disable-line promise/prefer-await-to-then
+        var player = new YT.Player(maybeElementId, options);
+
+        emitter.on('ready', function () {
+          resolve(player);
+        });
+
+        return null;
+      });
+    }
+  });
+
+  var playerApi = _YouTubePlayer2.default.promisifyPlayer(playerAPIReady, strictState);
+
+  playerApi.on = emitter.on;
+  playerApi.off = emitter.off;
+
+  return playerApi;
+};
+
+module.exports = exports['default'];
+},{"sister":"node_modules/sister/src/sister.js","./loadYouTubeIframeApi":"node_modules/youtube-player/dist/loadYouTubeIframeApi.js","./YouTubePlayer":"node_modules/youtube-player/dist/YouTubePlayer.js"}],"node_modules/react-youtube/dist/index.esm.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _fastDeepEqual = _interopRequireDefault(require("fast-deep-equal"));
+
+var _youtubePlayer = _interopRequireDefault(require("youtube-player"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
 }
-},{"react":"node_modules/react/index.js"}],"src/components/FilmsRow.js":[function(require,module,exports) {
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+function _createSuper(Derived) {
+  return function () {
+    var Super = _getPrototypeOf(Derived),
+        result;
+
+    if (_isNativeReflectConstruct()) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+
+    return _possibleConstructorReturn(this, result);
+  };
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (_typeof(call) === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return _assertThisInitialized(self);
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+/**
+ * Check whether a `props` change should result in the video being updated.
+ *
+ * @param {Object} prevProps
+ * @param {Object} props
+ */
+function shouldUpdateVideo(prevProps, props) {
+  // A changing video should always trigger an update
+  if (prevProps.videoId !== props.videoId) {
+    return true;
+  } // Otherwise, a change in the start/end time playerVars also requires a player
+  // update.
+
+
+  var prevVars = prevProps.opts.playerVars || {};
+  var vars = props.opts.playerVars || {};
+  return prevVars.start !== vars.start || prevVars.end !== vars.end;
+}
+/**
+ * Neutralize API options that only require a video update, leaving only options
+ * that require a player reset. The results can then be compared to see if a
+ * player reset is necessary.
+ *
+ * @param {Object} opts
+ */
+
+
+function filterResetOptions(opts) {
+  return _objectSpread({}, opts, {
+    playerVars: _objectSpread({}, opts.playerVars, {
+      autoplay: 0,
+      start: 0,
+      end: 0
+    })
+  });
+}
+/**
+ * Check whether a `props` change should result in the player being reset.
+ * The player is reset when the `props.opts` change, except if the only change
+ * is in the `start` and `end` playerVars, because a video update can deal with
+ * those.
+ *
+ * @param {Object} prevProps
+ * @param {Object} props
+ */
+
+
+function shouldResetPlayer(prevProps, props) {
+  return !(0, _fastDeepEqual.default)(filterResetOptions(prevProps.opts), filterResetOptions(props.opts));
+}
+/**
+ * Check whether a props change should result in an id or className update.
+ *
+ * @param {Object} prevProps
+ * @param {Object} props
+ */
+
+
+function shouldUpdatePlayer(prevProps, props) {
+  return prevProps.id !== props.id || prevProps.className !== props.className;
+}
+
+var YouTube = /*#__PURE__*/function (_React$Component) {
+  _inherits(YouTube, _React$Component);
+
+  var _super = _createSuper(YouTube);
+  /**
+   * Expose PlayerState constants for convenience. These constants can also be
+   * accessed through the global YT object after the YouTube IFrame API is instantiated.
+   * https://developers.google.com/youtube/iframe_api_reference#onStateChange
+   */
+
+
+  function YouTube(props) {
+    var _this;
+
+    _classCallCheck(this, YouTube);
+
+    _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "onPlayerReady", function (event) {
+      return _this.props.onReady(event);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onPlayerError", function (event) {
+      return _this.props.onError(event);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onPlayerStateChange", function (event) {
+      _this.props.onStateChange(event);
+
+      switch (event.data) {
+        case YouTube.PlayerState.ENDED:
+          _this.props.onEnd(event);
+
+          break;
+
+        case YouTube.PlayerState.PLAYING:
+          _this.props.onPlay(event);
+
+          break;
+
+        case YouTube.PlayerState.PAUSED:
+          _this.props.onPause(event);
+
+          break;
+
+        default:
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onPlayerPlaybackRateChange", function (event) {
+      return _this.props.onPlaybackRateChange(event);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onPlayerPlaybackQualityChange", function (event) {
+      return _this.props.onPlaybackQualityChange(event);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "createPlayer", function () {
+      // do not attempt to create a player server-side, it won't work
+      if (typeof document === 'undefined') return; // create player
+
+      var playerOpts = _objectSpread({}, _this.props.opts, {
+        // preload the `videoId` video if one is already given
+        videoId: _this.props.videoId
+      });
+
+      _this.internalPlayer = (0, _youtubePlayer.default)(_this.container, playerOpts); // attach event handlers
+
+      _this.internalPlayer.on('ready', _this.onPlayerReady);
+
+      _this.internalPlayer.on('error', _this.onPlayerError);
+
+      _this.internalPlayer.on('stateChange', _this.onPlayerStateChange);
+
+      _this.internalPlayer.on('playbackRateChange', _this.onPlayerPlaybackRateChange);
+
+      _this.internalPlayer.on('playbackQualityChange', _this.onPlayerPlaybackQualityChange);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "resetPlayer", function () {
+      return _this.internalPlayer.destroy().then(_this.createPlayer);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "updatePlayer", function () {
+      _this.internalPlayer.getIframe().then(function (iframe) {
+        if (_this.props.id) iframe.setAttribute('id', _this.props.id);else iframe.removeAttribute('id');
+        if (_this.props.className) iframe.setAttribute('class', _this.props.className);else iframe.removeAttribute('class');
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "updateVideo", function () {
+      if (typeof _this.props.videoId === 'undefined' || _this.props.videoId === null) {
+        _this.internalPlayer.stopVideo();
+
+        return;
+      } // set queueing options
+
+
+      var autoplay = false;
+      var opts = {
+        videoId: _this.props.videoId
+      };
+
+      if ('playerVars' in _this.props.opts) {
+        autoplay = _this.props.opts.playerVars.autoplay === 1;
+
+        if ('start' in _this.props.opts.playerVars) {
+          opts.startSeconds = _this.props.opts.playerVars.start;
+        }
+
+        if ('end' in _this.props.opts.playerVars) {
+          opts.endSeconds = _this.props.opts.playerVars.end;
+        }
+      } // if autoplay is enabled loadVideoById
+
+
+      if (autoplay) {
+        _this.internalPlayer.loadVideoById(opts);
+
+        return;
+      } // default behaviour just cues the video
+
+
+      _this.internalPlayer.cueVideoById(opts);
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "refContainer", function (container) {
+      _this.container = container;
+    });
+
+    _this.container = null;
+    _this.internalPlayer = null;
+    return _this;
+  }
+
+  _createClass(YouTube, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.createPlayer();
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      if (shouldUpdatePlayer(prevProps, this.props)) {
+        this.updatePlayer();
+      }
+
+      if (shouldResetPlayer(prevProps, this.props)) {
+        this.resetPlayer();
+      }
+
+      if (shouldUpdateVideo(prevProps, this.props)) {
+        this.updateVideo();
+      }
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      /**
+       * Note: The `youtube-player` package that is used promisifies all YouTube
+       * Player API calls, which introduces a delay of a tick before it actually
+       * gets destroyed. Since React attempts to remove the element instantly
+       * this method isn't quick enough to reset the container element.
+       */
+      this.internalPlayer.destroy();
+    }
+    /**
+     * https://developers.google.com/youtube/iframe_api_reference#onReady
+     *
+     * @param {Object} event
+     *   @param {Object} target - player object
+     */
+
+  }, {
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/_react.default.createElement("div", {
+        className: this.props.containerClassName
+      }, /*#__PURE__*/_react.default.createElement("div", {
+        id: this.props.id,
+        className: this.props.className,
+        ref: this.refContainer
+      }));
+    }
+  }]);
+
+  return YouTube;
+}(_react.default.Component);
+
+_defineProperty(YouTube, "PlayerState", {
+  UNSTARTED: -1,
+  ENDED: 0,
+  PLAYING: 1,
+  PAUSED: 2,
+  BUFFERING: 3,
+  CUED: 5
+});
+
+YouTube.propTypes = {
+  videoId: _propTypes.default.string,
+  // custom ID for player element
+  id: _propTypes.default.string,
+  // custom class name for player element
+  className: _propTypes.default.string,
+  // custom class name for player container element
+  containerClassName: _propTypes.default.string,
+  // https://developers.google.com/youtube/iframe_api_reference#Loading_a_Video_Player
+  opts: _propTypes.default.objectOf(_propTypes.default.any),
+  // event subscriptions
+  onReady: _propTypes.default.func,
+  onError: _propTypes.default.func,
+  onPlay: _propTypes.default.func,
+  onPause: _propTypes.default.func,
+  onEnd: _propTypes.default.func,
+  onStateChange: _propTypes.default.func,
+  onPlaybackRateChange: _propTypes.default.func,
+  onPlaybackQualityChange: _propTypes.default.func
+};
+YouTube.defaultProps = {
+  videoId: null,
+  id: null,
+  className: null,
+  opts: {},
+  containerClassName: '',
+  onReady: function onReady() {},
+  onError: function onError() {},
+  onPlay: function onPlay() {},
+  onPause: function onPause() {},
+  onEnd: function onEnd() {},
+  onStateChange: function onStateChange() {},
+  onPlaybackRateChange: function onPlaybackRateChange() {},
+  onPlaybackQualityChange: function onPlaybackQualityChange() {}
+};
+var _default = YouTube;
+exports.default = _default;
+},{"prop-types":"node_modules/prop-types/index.js","react":"node_modules/react/index.js","fast-deep-equal":"node_modules/fast-deep-equal/index.js","youtube-player":"node_modules/youtube-player/dist/index.js"}],"src/components/SingleFilmDetails.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = SingleFilmDetails;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactYoutube = _interopRequireDefault(require("react-youtube"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function SingleFilmDetails(_ref) {
+  var videoId = _ref.videoId,
+      movie = _ref.movie,
+      hasVideo = _ref.hasVideo;
+  var video_options = {
+    height: 320,
+    width: "100%",
+    playerVars: {
+      autoplay: 1
+    }
+  };
+
+  var handleError = function handleError() {
+    console.log("error");
+  };
+
+  return /*#__PURE__*/_react.default.createElement("div", {
+    className: "singleFilmDetails"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "trailer"
+  }, hasVideo ? /*#__PURE__*/_react.default.createElement(_reactYoutube.default, {
+    videoId: videoId,
+    opts: video_options,
+    onError: handleError
+  }) : /*#__PURE__*/_react.default.createElement("div", {
+    className: "noVideoFound"
+  }, "No trailer found")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "details"
+  }, /*#__PURE__*/_react.default.createElement("h3", null, (movie === null || movie === void 0 ? void 0 : movie.name) || (movie === null || movie === void 0 ? void 0 : movie.original_title)), /*#__PURE__*/_react.default.createElement("p", {
+    className: "description"
+  }, movie === null || movie === void 0 ? void 0 : movie.overview)));
+}
+},{"react":"node_modules/react/index.js","react-youtube":"node_modules/react-youtube/dist/index.esm.js"}],"node_modules/whatwg-fetch/fetch.js":[function(require,module,exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Headers = Headers;
+exports.Request = Request;
+exports.Response = Response;
+exports.fetch = fetch;
+exports.DOMException = void 0;
+
+var global = function (self) {
+  return self; // eslint-disable-next-line no-invalid-this
+}(typeof self !== 'undefined' ? self : void 0);
+
+var support = {
+  searchParams: 'URLSearchParams' in global,
+  iterable: 'Symbol' in global && 'iterator' in Symbol,
+  blob: 'FileReader' in global && 'Blob' in global && function () {
+    try {
+      new Blob();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }(),
+  formData: 'FormData' in global,
+  arrayBuffer: 'ArrayBuffer' in global
+};
+
+function isDataView(obj) {
+  return obj && DataView.prototype.isPrototypeOf(obj);
+}
+
+if (support.arrayBuffer) {
+  var viewClasses = ['[object Int8Array]', '[object Uint8Array]', '[object Uint8ClampedArray]', '[object Int16Array]', '[object Uint16Array]', '[object Int32Array]', '[object Uint32Array]', '[object Float32Array]', '[object Float64Array]'];
+
+  var isArrayBufferView = ArrayBuffer.isView || function (obj) {
+    return obj && viewClasses.indexOf(Object.prototype.toString.call(obj)) > -1;
+  };
+}
+
+function normalizeName(name) {
+  if (typeof name !== 'string') {
+    name = String(name);
+  }
+
+  if (/[^a-z0-9\-#$%&'*+.^_`|~!]/i.test(name) || name === '') {
+    throw new TypeError('Invalid character in header field name');
+  }
+
+  return name.toLowerCase();
+}
+
+function normalizeValue(value) {
+  if (typeof value !== 'string') {
+    value = String(value);
+  }
+
+  return value;
+} // Build a destructive iterator for the value list
+
+
+function iteratorFor(items) {
+  var iterator = {
+    next: function () {
+      var value = items.shift();
+      return {
+        done: value === undefined,
+        value: value
+      };
+    }
+  };
+
+  if (support.iterable) {
+    iterator[Symbol.iterator] = function () {
+      return iterator;
+    };
+  }
+
+  return iterator;
+}
+
+function Headers(headers) {
+  this.map = {};
+
+  if (headers instanceof Headers) {
+    headers.forEach(function (value, name) {
+      this.append(name, value);
+    }, this);
+  } else if (Array.isArray(headers)) {
+    headers.forEach(function (header) {
+      this.append(header[0], header[1]);
+    }, this);
+  } else if (headers) {
+    Object.getOwnPropertyNames(headers).forEach(function (name) {
+      this.append(name, headers[name]);
+    }, this);
+  }
+}
+
+Headers.prototype.append = function (name, value) {
+  name = normalizeName(name);
+  value = normalizeValue(value);
+  var oldValue = this.map[name];
+  this.map[name] = oldValue ? oldValue + ', ' + value : value;
+};
+
+Headers.prototype['delete'] = function (name) {
+  delete this.map[normalizeName(name)];
+};
+
+Headers.prototype.get = function (name) {
+  name = normalizeName(name);
+  return this.has(name) ? this.map[name] : null;
+};
+
+Headers.prototype.has = function (name) {
+  return this.map.hasOwnProperty(normalizeName(name));
+};
+
+Headers.prototype.set = function (name, value) {
+  this.map[normalizeName(name)] = normalizeValue(value);
+};
+
+Headers.prototype.forEach = function (callback, thisArg) {
+  for (var name in this.map) {
+    if (this.map.hasOwnProperty(name)) {
+      callback.call(thisArg, this.map[name], name, this);
+    }
+  }
+};
+
+Headers.prototype.keys = function () {
+  var items = [];
+  this.forEach(function (value, name) {
+    items.push(name);
+  });
+  return iteratorFor(items);
+};
+
+Headers.prototype.values = function () {
+  var items = [];
+  this.forEach(function (value) {
+    items.push(value);
+  });
+  return iteratorFor(items);
+};
+
+Headers.prototype.entries = function () {
+  var items = [];
+  this.forEach(function (value, name) {
+    items.push([name, value]);
+  });
+  return iteratorFor(items);
+};
+
+if (support.iterable) {
+  Headers.prototype[Symbol.iterator] = Headers.prototype.entries;
+}
+
+function consumed(body) {
+  if (body.bodyUsed) {
+    return Promise.reject(new TypeError('Already read'));
+  }
+
+  body.bodyUsed = true;
+}
+
+function fileReaderReady(reader) {
+  return new Promise(function (resolve, reject) {
+    reader.onload = function () {
+      resolve(reader.result);
+    };
+
+    reader.onerror = function () {
+      reject(reader.error);
+    };
+  });
+}
+
+function readBlobAsArrayBuffer(blob) {
+  var reader = new FileReader();
+  var promise = fileReaderReady(reader);
+  reader.readAsArrayBuffer(blob);
+  return promise;
+}
+
+function readBlobAsText(blob) {
+  var reader = new FileReader();
+  var promise = fileReaderReady(reader);
+  reader.readAsText(blob);
+  return promise;
+}
+
+function readArrayBufferAsText(buf) {
+  var view = new Uint8Array(buf);
+  var chars = new Array(view.length);
+
+  for (var i = 0; i < view.length; i++) {
+    chars[i] = String.fromCharCode(view[i]);
+  }
+
+  return chars.join('');
+}
+
+function bufferClone(buf) {
+  if (buf.slice) {
+    return buf.slice(0);
+  } else {
+    var view = new Uint8Array(buf.byteLength);
+    view.set(new Uint8Array(buf));
+    return view.buffer;
+  }
+}
+
+function Body() {
+  this.bodyUsed = false;
+
+  this._initBody = function (body) {
+    /*
+      fetch-mock wraps the Response object in an ES6 Proxy to
+      provide useful test harness features such as flush. However, on
+      ES5 browsers without fetch or Proxy support pollyfills must be used;
+      the proxy-pollyfill is unable to proxy an attribute unless it exists
+      on the object before the Proxy is created. This change ensures
+      Response.bodyUsed exists on the instance, while maintaining the
+      semantic of setting Request.bodyUsed in the constructor before
+      _initBody is called.
+    */
+    this.bodyUsed = this.bodyUsed;
+    this._bodyInit = body;
+
+    if (!body) {
+      this._bodyText = '';
+    } else if (typeof body === 'string') {
+      this._bodyText = body;
+    } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+      this._bodyBlob = body;
+    } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+      this._bodyFormData = body;
+    } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+      this._bodyText = body.toString();
+    } else if (support.arrayBuffer && support.blob && isDataView(body)) {
+      this._bodyArrayBuffer = bufferClone(body.buffer); // IE 10-11 can't handle a DataView body.
+
+      this._bodyInit = new Blob([this._bodyArrayBuffer]);
+    } else if (support.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(body) || isArrayBufferView(body))) {
+      this._bodyArrayBuffer = bufferClone(body);
+    } else {
+      this._bodyText = body = Object.prototype.toString.call(body);
+    }
+
+    if (!this.headers.get('content-type')) {
+      if (typeof body === 'string') {
+        this.headers.set('content-type', 'text/plain;charset=UTF-8');
+      } else if (this._bodyBlob && this._bodyBlob.type) {
+        this.headers.set('content-type', this._bodyBlob.type);
+      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+        this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+      }
+    }
+  };
+
+  if (support.blob) {
+    this.blob = function () {
+      var rejected = consumed(this);
+
+      if (rejected) {
+        return rejected;
+      }
+
+      if (this._bodyBlob) {
+        return Promise.resolve(this._bodyBlob);
+      } else if (this._bodyArrayBuffer) {
+        return Promise.resolve(new Blob([this._bodyArrayBuffer]));
+      } else if (this._bodyFormData) {
+        throw new Error('could not read FormData body as blob');
+      } else {
+        return Promise.resolve(new Blob([this._bodyText]));
+      }
+    };
+
+    this.arrayBuffer = function () {
+      if (this._bodyArrayBuffer) {
+        return consumed(this) || Promise.resolve(this._bodyArrayBuffer);
+      } else {
+        return this.blob().then(readBlobAsArrayBuffer);
+      }
+    };
+  }
+
+  this.text = function () {
+    var rejected = consumed(this);
+
+    if (rejected) {
+      return rejected;
+    }
+
+    if (this._bodyBlob) {
+      return readBlobAsText(this._bodyBlob);
+    } else if (this._bodyArrayBuffer) {
+      return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer));
+    } else if (this._bodyFormData) {
+      throw new Error('could not read FormData body as text');
+    } else {
+      return Promise.resolve(this._bodyText);
+    }
+  };
+
+  if (support.formData) {
+    this.formData = function () {
+      return this.text().then(decode);
+    };
+  }
+
+  this.json = function () {
+    return this.text().then(JSON.parse);
+  };
+
+  return this;
+} // HTTP methods whose capitalization should be normalized
+
+
+var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT'];
+
+function normalizeMethod(method) {
+  var upcased = method.toUpperCase();
+  return methods.indexOf(upcased) > -1 ? upcased : method;
+}
+
+function Request(input, options) {
+  options = options || {};
+  var body = options.body;
+
+  if (input instanceof Request) {
+    if (input.bodyUsed) {
+      throw new TypeError('Already read');
+    }
+
+    this.url = input.url;
+    this.credentials = input.credentials;
+
+    if (!options.headers) {
+      this.headers = new Headers(input.headers);
+    }
+
+    this.method = input.method;
+    this.mode = input.mode;
+    this.signal = input.signal;
+
+    if (!body && input._bodyInit != null) {
+      body = input._bodyInit;
+      input.bodyUsed = true;
+    }
+  } else {
+    this.url = String(input);
+  }
+
+  this.credentials = options.credentials || this.credentials || 'same-origin';
+
+  if (options.headers || !this.headers) {
+    this.headers = new Headers(options.headers);
+  }
+
+  this.method = normalizeMethod(options.method || this.method || 'GET');
+  this.mode = options.mode || this.mode || null;
+  this.signal = options.signal || this.signal;
+  this.referrer = null;
+
+  if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+    throw new TypeError('Body not allowed for GET or HEAD requests');
+  }
+
+  this._initBody(body);
+
+  if (this.method === 'GET' || this.method === 'HEAD') {
+    if (options.cache === 'no-store' || options.cache === 'no-cache') {
+      // Search for a '_' parameter in the query string
+      var reParamSearch = /([?&])_=[^&]*/;
+
+      if (reParamSearch.test(this.url)) {
+        // If it already exists then set the value with the current time
+        this.url = this.url.replace(reParamSearch, '$1_=' + new Date().getTime());
+      } else {
+        // Otherwise add a new '_' parameter to the end with the current time
+        var reQueryString = /\?/;
+        this.url += (reQueryString.test(this.url) ? '&' : '?') + '_=' + new Date().getTime();
+      }
+    }
+  }
+}
+
+Request.prototype.clone = function () {
+  return new Request(this, {
+    body: this._bodyInit
+  });
+};
+
+function decode(body) {
+  var form = new FormData();
+  body.trim().split('&').forEach(function (bytes) {
+    if (bytes) {
+      var split = bytes.split('=');
+      var name = split.shift().replace(/\+/g, ' ');
+      var value = split.join('=').replace(/\+/g, ' ');
+      form.append(decodeURIComponent(name), decodeURIComponent(value));
+    }
+  });
+  return form;
+}
+
+function parseHeaders(rawHeaders) {
+  var headers = new Headers(); // Replace instances of \r\n and \n followed by at least one space or horizontal tab with a space
+  // https://tools.ietf.org/html/rfc7230#section-3.2
+
+  var preProcessedHeaders = rawHeaders.replace(/\r?\n[\t ]+/g, ' ');
+  preProcessedHeaders.split(/\r?\n/).forEach(function (line) {
+    var parts = line.split(':');
+    var key = parts.shift().trim();
+
+    if (key) {
+      var value = parts.join(':').trim();
+      headers.append(key, value);
+    }
+  });
+  return headers;
+}
+
+Body.call(Request.prototype);
+
+function Response(bodyInit, options) {
+  if (!options) {
+    options = {};
+  }
+
+  this.type = 'default';
+  this.status = options.status === undefined ? 200 : options.status;
+  this.ok = this.status >= 200 && this.status < 300;
+  this.statusText = 'statusText' in options ? options.statusText : '';
+  this.headers = new Headers(options.headers);
+  this.url = options.url || '';
+
+  this._initBody(bodyInit);
+}
+
+Body.call(Response.prototype);
+
+Response.prototype.clone = function () {
+  return new Response(this._bodyInit, {
+    status: this.status,
+    statusText: this.statusText,
+    headers: new Headers(this.headers),
+    url: this.url
+  });
+};
+
+Response.error = function () {
+  var response = new Response(null, {
+    status: 0,
+    statusText: ''
+  });
+  response.type = 'error';
+  return response;
+};
+
+var redirectStatuses = [301, 302, 303, 307, 308];
+
+Response.redirect = function (url, status) {
+  if (redirectStatuses.indexOf(status) === -1) {
+    throw new RangeError('Invalid status code');
+  }
+
+  return new Response(null, {
+    status: status,
+    headers: {
+      location: url
+    }
+  });
+};
+
+var DOMException = global.DOMException;
+exports.DOMException = DOMException;
+
+if (typeof DOMException !== 'function') {
+  exports.DOMException = DOMException = function (message, name) {
+    this.message = message;
+    this.name = name;
+    var error = Error(message);
+    this.stack = error.stack;
+  };
+
+  DOMException.prototype = Object.create(Error.prototype);
+  DOMException.prototype.constructor = DOMException;
+}
+
+function fetch(input, init) {
+  return new Promise(function (resolve, reject) {
+    var request = new Request(input, init);
+
+    if (request.signal && request.signal.aborted) {
+      return reject(new DOMException('Aborted', 'AbortError'));
+    }
+
+    var xhr = new XMLHttpRequest();
+
+    function abortXhr() {
+      xhr.abort();
+    }
+
+    xhr.onload = function () {
+      var options = {
+        status: xhr.status,
+        statusText: xhr.statusText,
+        headers: parseHeaders(xhr.getAllResponseHeaders() || '')
+      };
+      options.url = 'responseURL' in xhr ? xhr.responseURL : options.headers.get('X-Request-URL');
+      var body = 'response' in xhr ? xhr.response : xhr.responseText;
+      setTimeout(function () {
+        resolve(new Response(body, options));
+      }, 0);
+    };
+
+    xhr.onerror = function () {
+      setTimeout(function () {
+        reject(new TypeError('Network request failed'));
+      }, 0);
+    };
+
+    xhr.ontimeout = function () {
+      setTimeout(function () {
+        reject(new TypeError('Network request failed'));
+      }, 0);
+    };
+
+    xhr.onabort = function () {
+      setTimeout(function () {
+        reject(new DOMException('Aborted', 'AbortError'));
+      }, 0);
+    };
+
+    function fixUrl(url) {
+      try {
+        return url === '' && global.location.href ? global.location.href : url;
+      } catch (e) {
+        return url;
+      }
+    }
+
+    xhr.open(request.method, fixUrl(request.url), true);
+
+    if (request.credentials === 'include') {
+      xhr.withCredentials = true;
+    } else if (request.credentials === 'omit') {
+      xhr.withCredentials = false;
+    }
+
+    if ('responseType' in xhr) {
+      if (support.blob) {
+        xhr.responseType = 'blob';
+      } else if (support.arrayBuffer && request.headers.get('Content-Type') && request.headers.get('Content-Type').indexOf('application/octet-stream') !== -1) {
+        xhr.responseType = 'arraybuffer';
+      }
+    }
+
+    request.headers.forEach(function (value, name) {
+      xhr.setRequestHeader(name, value);
+    });
+
+    if (request.signal) {
+      request.signal.addEventListener('abort', abortXhr);
+
+      xhr.onreadystatechange = function () {
+        // DONE (success or failure)
+        if (xhr.readyState === 4) {
+          request.signal.removeEventListener('abort', abortXhr);
+        }
+      };
+    }
+
+    xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit);
+  });
+}
+
+fetch.polyfill = true;
+
+if (!global.fetch) {
+  global.fetch = fetch;
+  global.Headers = Headers;
+  global.Request = Request;
+  global.Response = Response;
+}
+},{}],"node_modules/isomorphic-fetch/fetch-npm-browserify.js":[function(require,module,exports) {
+// the whatwg-fetch polyfill installs the fetch() function
+// on the global object (window or self)
+//
+// Return that as the export for use in Webpack, Browserify etc.
+require('whatwg-fetch');
+module.exports = self.fetch.bind(self);
+
+},{"whatwg-fetch":"node_modules/whatwg-fetch/fetch.js"}],"node_modules/movie-trailer/index.js":[function(require,module,exports) {
+var define;
+'use strict';
+
+(function (root, cx) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(['isomorphic-fetch'], cx);
+  } else if (typeof exports === 'object') {
+    // Node, CommonJS-like
+    module.exports = cx(require('isomorphic-fetch'));
+  } else {
+    // Browser globals (root is window)
+    root.movieTrailer = cx(root.fetch);
+  }
+})(this, function (fetch) {
+  // Public Key on purpose
+  const apiKey = '9d2bff12ed955c7f1f74b83187f188ae';
+
+  function toUrl(videoId) {
+    return encodeURI('https://www.youtube.com/watch?v=' + videoId);
+  }
+
+  function getMovieId(search, year, language) {
+    /* Fetch a Movie ID for querying the TMDB API */
+    const url = 'https://api.themoviedb.org' + encodeURI('/3/search/movie?api_key=' + apiKey + '&query=' + search + (year !== null ? '&year=' + year : '') + (language !== null ? '&language=' + language : ''));
+    const response = fetch(url, {
+      method: 'GET'
+    }).then(res => res.json(), err => Promise.reject(err.message)).then(json => {
+      if (typeof json.status_message !== 'undefined') {
+        // Error
+        return Promise.reject(new Error(`JSON - ${json.status_message}`));
+      } else if (json.results.length === 0) {
+        // Retry failed search without year
+        if (year !== null) {
+          getMovieId(search, null, language);
+        } else {
+          // Error
+          return Promise.reject(new Error('API - No results found'));
+        }
+      } else {
+        return json.results[0].id;
+      }
+    }).catch(error => error);
+    return response;
+  }
+
+  function getTrailer(movieId, multi, videoId, language) {
+    /* Fetch single or multiple movie trailers via the TMDB API */
+    const endpoint = 'https://api.themoviedb.org' + encodeURI('/3/movie/' + movieId + '/videos?api_key=' + apiKey + (language !== null ? '&language=' + language : ''));
+    const response = fetch(endpoint, {
+      method: 'GET'
+    }).then(res => res.json(), err => Promise.reject(err.message)).then(json => {
+      if (typeof json.status_message !== 'undefined') {
+        // Error
+        return Promise.reject(new Error(`JSON - ${json.status_message}`));
+      } else if (json.results.length === 0) {
+        // Error
+        return Promise.reject(new Error('API - No results found'));
+      }
+
+      let results = json.results; // Strip all but videoId
+
+      results = results.map(result => {
+        return result.key;
+      });
+
+      if (!videoId) {
+        // Return Youtube videoID or full `Watch` URL
+        results = results.map(toUrl);
+      }
+
+      if (multi) {
+        // Return *unique* urls
+        return Array.from(new Set(results));
+      } else {
+        return results[0];
+      }
+    });
+    return response;
+  }
+
+  function movieTrailer(movie, options, cb, legacy) {
+    /* Fetch movie trailers */
+    // Massage inputs
+    let opts = {
+      multi: false,
+      id: false,
+      year: null,
+      language: null
+    };
+
+    if (typeof movie !== 'string') {
+      throw new Error('Expected first parameter to be a movie (string)');
+    } else if (typeof options === 'function') {
+      // Second parameter is the callback
+      cb = options;
+      options = null;
+    } else if (typeof options === 'boolean' || options === 'true') {
+      // Second parameter is multi
+      opts.multi = options;
+    } else if (typeof options === 'string' || typeof options === 'number') {
+      // Second parameter is year
+      opts.year = options;
+      /* BACKWARDS-COMPATABILITY FOR v1 */
+
+      if (typeof legacy === 'function' && (typeof cb === 'boolean' || typeof cb === 'string' && cb === 'true')) {
+        // Third parameter is multi
+        opts.multi = cb;
+        cb = legacy;
+      }
+      /* END BACKWARDS-COMPATABILITY */
+
+    } else if (typeof options === 'object') {
+      // Set options
+      opts = Object.assign(opts, options);
+    } // Remove invalid callback
+
+
+    if (typeof cb !== 'function') cb = null;
+    const response = getMovieId(movie, opts.year, opts.language).then(movieId => {
+      return getTrailer(movieId, opts.multi, opts.id, opts.language);
+    }); // Callback
+
+    if (cb) {
+      return response.then(res => cb(null, res), err => cb(err, null));
+    } // Promise
+
+
+    return response;
+  } // Exposed public method
+
+
+  return movieTrailer;
+});
+},{"isomorphic-fetch":"node_modules/isomorphic-fetch/fetch-npm-browserify.js"}],"src/components/FilmsRow.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47910,9 +51120,11 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _bs = require("react-icons/bs");
 
-var _FilmItem = _interopRequireDefault(require("./FilmItem"));
+var _SingleFilmDetails = _interopRequireDefault(require("./SingleFilmDetails"));
 
 var _filmRequests = require("../modules/filmRequests");
+
+var _movieTrailer = _interopRequireDefault(require("movie-trailer"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47936,6 +51148,8 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+var IMG_BASE_URL = "https://image.tmdb.org/t/p/original/";
+
 function FilmsRow(_ref) {
   var title = _ref.title,
       request = _ref.request,
@@ -47945,6 +51159,31 @@ function FilmsRow(_ref) {
       _useState2 = _slicedToArray(_useState, 2),
       movies = _useState2[0],
       setMovies = _useState2[1];
+
+  var _useState3 = (0, _react.useState)(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      showDetails = _useState4[0],
+      setShowDetails = _useState4[1];
+
+  var _useState5 = (0, _react.useState)(""),
+      _useState6 = _slicedToArray(_useState5, 2),
+      videoUrl = _useState6[0],
+      setVideoUrl = _useState6[1];
+
+  var _useState7 = (0, _react.useState)({}),
+      _useState8 = _slicedToArray(_useState7, 2),
+      movieDetails = _useState8[0],
+      setMovieDetails = _useState8[1];
+
+  var _useState9 = (0, _react.useState)(true),
+      _useState10 = _slicedToArray(_useState9, 2),
+      hasVideo = _useState10[0],
+      setHasVideo = _useState10[1];
+
+  var _useState11 = (0, _react.useState)(false),
+      _useState12 = _slicedToArray(_useState11, 2),
+      hasAlreadyClicked = _useState12[0],
+      setHasAlreadyClicked = _useState12[1];
 
   (0, _react.useEffect)(function () {
     function fetchData() {
@@ -47980,15 +51219,44 @@ function FilmsRow(_ref) {
   var scrollHandle = {
     SCROLL_INTENSITY: bigger ? 235 * 5 : 170 * 7,
     left: function left(e) {
-      var row = e.target.parentNode.parentNode.lastChild;
+      var row = e.target.parentNode.parentNode.querySelector(".filmRow");
       if (row.scrollLeft === 0) return;
       row.scrollLeft -= scrollHandle.SCROLL_INTENSITY;
     },
     right: function right(e) {
-      var row = e.target.parentNode.parentNode.lastChild;
+      var row = e.target.parentNode.parentNode.querySelector(".filmRow");
       row.scrollLeft += scrollHandle.SCROLL_INTENSITY;
     }
   };
+
+  var HandleItemClick = function HandleItemClick(e, movie) {
+    setMovieDetails(movie);
+    (0, _movieTrailer.default)((movie === null || movie === void 0 ? void 0 : movie.name) || (movie === null || movie === void 0 ? void 0 : movie.original_title) || "").then(function (url) {
+      setHasVideo(true);
+      var urlParams = new URLSearchParams(new URL(url).search);
+
+      if (urlParams.get("v") === videoUrl && videoUrl !== "") {
+        setMovieDetails({});
+        setVideoUrl("");
+        setShowDetails(false);
+        return;
+      }
+
+      setVideoUrl(urlParams.get("v"));
+    }).catch(function (err) {
+      setHasAlreadyClicked(!hasAlreadyClicked);
+      setHasVideo(false);
+
+      if (hasAlreadyClicked) {
+        setShowDetails(false);
+        setHasAlreadyClicked(false);
+      }
+
+      console.log(err);
+    });
+    setShowDetails(true);
+  };
+
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "filmCategory"
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -48007,14 +51275,27 @@ function FilmsRow(_ref) {
     className: "filmRow ".concat(bigger && "bigger")
   }, movies.map(function (movie) {
     if (movie.poster_path) {
-      return /*#__PURE__*/_react.default.createElement(_FilmItem.default, {
+      var movieName = movie.name || movie.original_title;
+      return /*#__PURE__*/_react.default.createElement("div", {
+        className: "filmItem",
         key: movie.id,
-        movie: movie
-      });
+        onClick: function onClick(e) {
+          return HandleItemClick(e, movie);
+        }
+      }, /*#__PURE__*/_react.default.createElement("div", {
+        className: "filmImg"
+      }, /*#__PURE__*/_react.default.createElement("img", {
+        src: IMG_BASE_URL + movie.poster_path,
+        alt: "Movie : " + (movieName || "unknown")
+      })));
     }
-  })));
+  })), showDetails && /*#__PURE__*/_react.default.createElement(_SingleFilmDetails.default, {
+    videoId: videoUrl,
+    movie: movieDetails,
+    hasVideo: hasVideo
+  }));
 }
-},{"react":"node_modules/react/index.js","react-icons/bs":"node_modules/react-icons/bs/index.esm.js","./FilmItem":"src/components/FilmItem.js","../modules/filmRequests":"src/modules/filmRequests.js"}],"src/app.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-icons/bs":"node_modules/react-icons/bs/index.esm.js","./SingleFilmDetails":"src/components/SingleFilmDetails.js","../modules/filmRequests":"src/modules/filmRequests.js","movie-trailer":"node_modules/movie-trailer/index.js"}],"src/app.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
@@ -48095,7 +51376,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50460" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49900" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
