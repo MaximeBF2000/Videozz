@@ -28,16 +28,18 @@ export default function FilmsRow({ title, request, bigger }) {
   }, [request])
 
   // CHEVRON CLICK HANDLING --> MOVE LEFT OR RIGHT WITH THE CHEVRONS
-  const scrollHandle = {
-    SCROLL_INTENSITY: bigger ? 235*5 : 170*7,
-    left: e => {
-      const row = e.target.parentNode.parentNode.querySelector(".filmRow")
-      if(row.scrollLeft === 0) return
-      row.scrollLeft -= scrollHandle.SCROLL_INTENSITY
-    },
-    right: e => {
-      const row = e.target.parentNode.parentNode.querySelector(".filmRow")
-      row.scrollLeft += scrollHandle.SCROLL_INTENSITY
+  const scrollHandle = (e, direction) => {
+    const row = e.target.parentNode.parentNode.querySelector(".filmRow")
+    const elem_width = e.target.parentNode.parentNode.querySelector(".filmItem").clientWidth
+    const scrollIntensity = bigger ? (elem_width + 20) * 5 : (elem_width + 20) * 7
+
+    console.log(scrollIntensity)
+
+    if(direction === "left") {
+      // if(row.scrollLeft === 0) return
+      row.scrollBy({ top: 0, left: -scrollIntensity, behavior: 'smooth' })
+    } else {
+      row.scrollBy({ top: 0, left: +scrollIntensity, behavior: 'smooth' })
     }
   }
 
@@ -77,10 +79,10 @@ export default function FilmsRow({ title, request, bigger }) {
 
   return (
     <div className="filmCategory">
-      <div className="chevron chevronLeft" onClick={e => scrollHandle.left(e)}>
+      <div className="chevron chevronLeft" onClick={e => scrollHandle(e, "left")}>
         <BsChevronCompactLeft />
       </div>
-      <div className="chevron chevronRight" onClick={e => scrollHandle.right(e)}>
+      <div className="chevron chevronRight" onClick={e => scrollHandle(e, "right")}>
         <BsChevronCompactRight />
       </div>
       <h2 className="categoryTitle">{ title }</h2>
