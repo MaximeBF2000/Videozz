@@ -249,4 +249,18 @@ body.dark {
   margin-top: 5px;
 }
 
+@media screen and (max-width: 550px) {
+  .filmCategory .singleFilmDetails {
+    grid-template-columns: 1fr;
+    height: fit-content;
+  }
+  .filmCategory .singleFilmDetails .noVideoFound {
+    height: unset;
+    padding: 1rem 0;
+  }
+  .filmCategory .singleFilmDetails .details {
+    padding: 2rem 0;
+  }
+}
+
 /*# sourceMappingURL=/app.a6a4d504.css.map */

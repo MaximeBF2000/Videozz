@@ -152,3 +152,22 @@ $filmItemWidth: 150px;
   }
 
 }
+
+
+@media screen and (max-width: $bpS){
+  .filmCategory{
+    .singleFilmDetails{
+      grid-template-columns: 1fr;
+      height: fit-content;
+
+      .noVideoFound{
+        height: unset;
+        padding: 1rem 0;
+      }
+
+      .details{
+        padding: 2rem 0;
+      }
+    }
+  }
+}
