@@ -8,7 +8,6 @@
   width: 100%;
   padding: 1rem $container_size;
   background-color: rgba($darkgrey, .7);
-  // background-color: transparent;
   display: flex;
   justify-content: space-between;
 
@@ -28,5 +27,15 @@
     background-color: $white;
     color: #000;
     cursor: pointer;
+  }
+}
+
+@media screen and (max-width: $bpS){
+  .navbar{
+    padding: 1rem;
+
+    .toggle_darkmode{
+      text-align: center;
+    }
   }
 }

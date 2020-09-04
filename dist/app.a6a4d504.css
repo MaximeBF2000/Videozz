@@ -68,6 +68,14 @@ body.dark {
   cursor: pointer;
 }
 
+@media screen and (max-width: 550px) {
+  .navbar {
+    padding: 1rem;
+  }
+  .navbar .toggle_darkmode {
+    text-align: center;
+  }
+}
 .center, .filmCategory .singleFilmDetails .noVideoFound, .filmCategory .filmRow .filmItem .filmTitleContainer {
   display: flex;
   flex-direction: column;
