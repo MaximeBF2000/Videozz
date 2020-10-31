@@ -1,32 +1,26 @@
-import 'regenerator-runtime/runtime'
-import React from 'react'
-import ReactDOM from 'react-dom'
+import "regenerator-runtime/runtime"
+import React from "react"
+import ReactDOM from "react-dom"
+import Routes from "./Routes"
+import { Route } from "react-router-dom"
 import "./app.scss"
 
-import FilmBanner from "./components/FilmBanner"
-import Navbar from "./components/Navbar"
-
-import requests from "./modules/filmRequests"
-import FilmsRow from "./components/FilmsRow"
+import HomePage from "./routes/HomePage"
+import SearchPage from "./routes/SearchPage"
+import NotFoundPage from "./routes/NotFoundPage"
 
 function App() {
-  return (
-    <>
-      <Navbar />
-      <FilmBanner />
-      <div className="body">
-        <FilmsRow title="Netflix Originals" request={requests.fetchNetflixOg} bigger />
-        <FilmsRow title="Trending" request={requests.fetchTrending} />
-        <FilmsRow title="Top Rated" request={requests.fetchTopRated} />
-        <FilmsRow title="Action" request={requests.fetchActionMovies} />
-        <FilmsRow title="Comedy" request={requests.fetchComedyMovies} />
-        <FilmsRow title="Horror" request={requests.fetchHorrorMovies} />
-        <FilmsRow title="Romance" request={requests.fetchRomanceMovies} />
-        <FilmsRow title="Documentaries" request={requests.fetchDocumentaries} />
-      </div>
-    </>
-  )
+	return (
+		<Routes>
+      <Route exact path="/">
+        <HomePage />
+      </Route>
+      <Route exact path="/search">
+        <SearchPage />
+      </Route>
+      <Route path="*" children={NotFoundPage} />
+    </Routes>
+	)
 }
-
 
 ReactDOM.render(<App />, document.getElementById("root"))

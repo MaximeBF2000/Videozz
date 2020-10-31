@@ -1,25 +1,42 @@
 @import "./styles/config";
 
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: $ff;
-  transition: .3s;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: $ff;
+	transition: 0.3s;
 }
 
+a, button {
+  all: unset;
+  cursor: pointer;
+}
 // possible bg radient end : #9198e5, #000
-body{
-  background: radial-gradient($bgc, #9198e5);
-  color: $white;
-  transition: .3s;
+body {
+	background: radial-gradient($bgc, #9198e5);
+	color: $white;
+	transition: 0.3s;
 
-  &.dark{
-    background: radial-gradient($bgc, #000);
-  }
+	&.dark {
+		background: radial-gradient($bgc, #000);
+	}
 
+	.notFoundPage {
+    @extend .center;
+    height: 100vh;
+    .goBackBtn {
+      text-decoration: none;
+      margin-top: 2rem;
+      padding: .5rem 1rem;
+      border-radius: .25rem;
+      background-color: $white;
+      color: #000;
+    }
+	}
 }
 
 @import "./styles/nav";
 @import "./styles/banner";
 @import "./styles/films";
+@import "./styles/searchPage";

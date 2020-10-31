@@ -14,5 +14,6 @@ export default {
   fetchComedyMovies: `/discover/movie?api_key=${API_KEY}&with_genres=35`,
   fetchHorrorMovies: `/discover/movie?api_key=${API_KEY}&with_genres=27`,
   fetchRomanceMovies: `/discover/movie?api_key=${API_KEY}&with_genres=10749`,
-  fetchDocumentaries: `/discover/movie?api_key=${API_KEY}&with_genres=99`
+  fetchDocumentaries: `/discover/movie?api_key=${API_KEY}&with_genres=99`,
+  searchQuery: (query, page) => `/search/movie?api_key=${API_KEY}&language=en-US&page=${page ?? "1"}&include_adult=false&query=${query}`
 }

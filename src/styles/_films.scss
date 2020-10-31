@@ -2,6 +2,41 @@
 
 $filmItemWidth: 150px;
 
+.filmItem{
+  width: $filmItemWidth;
+  background-color: transparent /* OU QUAND ON MET LE TITRE : $darkgrey */;
+  margin: 0 10px;
+  cursor: pointer;
+
+  &:hover{
+    transform: scale(1.1);
+  }
+
+  .filmImg{
+    width: $filmItemWidth;
+
+    img{
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .filmTitleContainer{
+    @extend .center;
+    width: 100%;
+    height: 2rem;
+    padding: 0 .3rem;
+    padding-bottom: .5rem;
+    
+    .filmTitle{
+      width: 100%;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+}
+
 .filmCategory{
   position: relative;
   margin: 2rem 0;
@@ -54,42 +89,6 @@ $filmItemWidth: 150px;
 
     &::-webkit-scrollbar{
       display: none;
-    }
-
-    .filmItem{
-      width: $filmItemWidth;
-      background-color: transparent /* OU QUAND ON MET LE TITRE : $darkgrey */;
-      margin: 0 10px;
-      cursor: pointer;
-
-      &:hover{
-        transform: scale(1.1);
-      }
-
-      .filmImg{
-        width: $filmItemWidth;
-
-        img{
-          width: 100%;
-          object-fit: contain;
-        }
-      }
-
-      .filmTitleContainer{
-        @extend .center;
-        width: 100%;
-        height: 2rem;
-        padding: 0 .3rem;
-        padding-bottom: .5rem;
-        
-        .filmTitle{
-          width: 100%;
-          text-align: center;
-          overflow: hidden;
-          white-space: nowrap;
-        }
-      }
-
     }
 
     &.bigger{

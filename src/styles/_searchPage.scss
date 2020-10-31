@@ -1,0 +1,26 @@
+@import "./config";
+
+.searchPage {
+  padding: 5rem 2rem;
+
+  .goBackBtn {
+    background-color: $white;
+    padding: .5rem 1rem;
+    color: black;
+    border-radius: .25rem;
+    margin-bottom: 2rem;
+  }
+
+  .searchTitle {
+    margin-bottom: 2rem;
+  }
+
+  .searchFilmContainer {
+    display: flex;
+    flex-flow: wrap;
+
+    .filmItem {
+      margin-bottom: 1rem;
+    }
+  }
+}

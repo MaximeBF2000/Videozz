@@ -1,4 +1,4 @@
-.center, .filmCategory .singleFilmDetails .noVideoFound, .filmCategory .filmRow .filmItem .filmTitleContainer {
+.center, .filmCategory .singleFilmDetails .noVideoFound, .filmCategory .filmRow .filmItem .filmTitleContainer, .navbar .toggle_darkmode {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,7 +28,7 @@ body.dark {
   background: radial-gradient(#0d5ee0, #000);
 }
 
-.center, .filmCategory .singleFilmDetails .noVideoFound, .filmCategory .filmRow .filmItem .filmTitleContainer {
+.center, .filmCategory .singleFilmDetails .noVideoFound, .filmCategory .filmRow .filmItem .filmTitleContainer, .navbar .toggle_darkmode {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -50,13 +50,44 @@ body.dark {
   padding: 1rem 3rem;
   background-color: rgba(38, 38, 38, 0.7);
   display: flex;
-  justify-content: space-between;
 }
 .navbar.solid {
   background-color: #111;
 }
+.navbar.solid .searchBox .search::placeholder {
+  color: #e5e5e5;
+}
 .navbar .logo {
   margin-left: 10px;
+  flex: 1;
+}
+.navbar .searchBox {
+  position: relative;
+  align-self: stretch;
+}
+.navbar .searchBox .search {
+  outline: none;
+  border: none;
+  background-color: black;
+  color: #fefefe;
+  padding: 0 0.5rem;
+  border-radius: 0.25rem;
+  margin-right: 1rem;
+  min-width: 300px;
+  height: 100%;
+}
+.navbar .searchBox .search::placeholder {
+  color: #b2b2b2;
+  transition: 0.3s;
+}
+.navbar .searchBox .searchIcon {
+  cursor: pointer;
+  color: #fefefe;
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.6rem;
 }
 .navbar .toggle_darkmode {
   all: unset;
@@ -76,7 +107,7 @@ body.dark {
     text-align: center;
   }
 }
-.center, .filmCategory .singleFilmDetails .noVideoFound, .filmCategory .filmRow .filmItem .filmTitleContainer {
+.center, .filmCategory .singleFilmDetails .noVideoFound, .filmCategory .filmRow .filmItem .filmTitleContainer, .navbar .toggle_darkmode {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -125,7 +156,7 @@ body.dark {
   line-height: 1.4;
 }
 
-.center, .filmCategory .singleFilmDetails .noVideoFound, .filmCategory .filmRow .filmItem .filmTitleContainer {
+.center, .filmCategory .singleFilmDetails .noVideoFound, .filmCategory .filmRow .filmItem .filmTitleContainer, .navbar .toggle_darkmode {
   display: flex;
   flex-direction: column;
   justify-content: center;
