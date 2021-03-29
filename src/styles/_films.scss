@@ -101,24 +101,31 @@ $filmItemWidth: 150px;
       }
     }
   }
+}
 
-  .singleFilmDetails{
+.singleFilmDetails{
+  z-index: 5;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(black, .7);
+  @extend .center;
+
+  .popup {
     position: relative;
-    width: calc(100% - 10px);
+    width: 80%;
     height: 350px;
+    max-height: 90%;
     background-color: $darkgrey;
     margin-left: 10px;
     border-radius: .25rem;
     padding: 1rem;
+    padding-bottom: 5rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
 
-    &.popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
 
     .closeBtn {
       cursor: pointer;
@@ -126,11 +133,12 @@ $filmItemWidth: 150px;
       right: .8rem;
       top: 1rem;
       font-size: 2rem;
-      z-index: 1;
+      z-index: 6;
       background-color: darken($darkgrey, 10%);
       line-height: .8;
       padding: .2rem .4rem;
       border-radius: .25rem;
+      opacity: 0.9;
     }
 
     .noVideoFound{
@@ -170,23 +178,28 @@ $filmItemWidth: 150px;
       }
     }
   }
-
 }
 
 
 @media screen and (max-width: $bpS){
-  .filmCategory{
-    .singleFilmDetails{
+  .singleFilmDetails{
+    .popup {
       grid-template-columns: 1fr;
+      row-gap: 1rem;
       height: fit-content;
+      overflow-y: scroll;
 
-      .noVideoFound{
-        height: unset;
+      .closeBtn {
+        right: 1rem;
+      }
+    
+      .noVideoFound {
         padding: 1rem 0;
       }
 
       .details{
         padding: 2rem 0;
+        padding-bottom: 3rem;
       }
     }
   }

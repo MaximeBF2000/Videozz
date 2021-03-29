@@ -1,25 +1,34 @@
 import React, { useState, useEffect } from "react"
 import { useStore } from "../context/context"
 import { useHistory } from "react-router-dom"
+import axios from "axios"
 import requests, { filmServer } from "../modules/filmRequests"
 
 import Navbar from "../components/Navbar"
 import FilmItem from "../components/FilmItem"
-import SingleFilmDetails from "../components/SingleFilmDetails"
 
 export default function SearchPage() {
   const [movies, setMovies] = useState([])
-  const [showMovie, setShowMovie] = useState(false)
+  const [loading, setLoading] = useState(false)
   const { searchTerm } = useStore()
   const history = useHistory()
 
   useEffect(() => {
+    const source = axios.CancelToken.source()
     async function fetchData() {
-      const res = await filmServer.get(requests.searchQuery(searchTerm))
-      setMovies(res.data.results)
-      console.log(res)
+      setLoading(true)
+      try {
+        const res = await filmServer.get(requests.searchQuery(searchTerm), { cancelToken: source.token })
+        setMovies(res.data.results)
+        setLoading(false)
+      } catch(err) {
+        console.error("Error while fetching movies : ", err)
+      }
+      setLoading(false)
     }
     fetchData()
+
+    return () => source.cancel()
   }, [searchTerm])
 
   const goToHome = () => history.push("/")
@@ -30,13 +39,13 @@ export default function SearchPage() {
 			<button className="goBackBtn" onClick={goToHome}>Go back</button>
       <h2 className="searchTitle">Films for : "{searchTerm}"</h2>
 			<div className="searchFilmContainer">
-        {movies.length === 0 ? (
+        {loading ? (
+          <p>Loading...</p>
+        ) :movies.length === 0 ? (
           <p>No results found...</p>
         ) : (
           movies.map((movie, i) => (
-            <>
-              <FilmItem movie={movie} key={i} onClick={() => setShowMovie(ps => !ps)} />
-            </>
+            <FilmItem key={i} movie={movie} />
           ))
         )}
       </div>

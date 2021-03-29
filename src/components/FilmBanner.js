@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import requests, { filmServer } from "../modules/filmRequests"
+import getMovieDetails from "../modules/getMovieDetails"
 import SingleFilmDetails from "../components/SingleFilmDetails"
 
 
@@ -8,6 +9,8 @@ const truncateStr = (str, n) => str?.length > n ? str.slice(0, n - 1) + "..." : 
 export default function FilmBanner() {
   const [movie, setMovie] = useState([])
   const [showDetails, setShowDetails] = useState(false)
+
+  const [url, hasTrailer] = getMovieDetails(movie)
 
   useEffect(() => {
     async function fetchData(){
@@ -27,8 +30,8 @@ export default function FilmBanner() {
         <div className="banner_content">
           <h1 className="banner_title"> { movie?.title || movie?.name || movie?.original_name } </h1>
           <div className="banner_buttons">
-            <button className="banner_btn">Play</button>
-            <button className="banner_btn">Info</button>
+            <button className="banner_btn" onClick={() => setShowDetails(ps => !ps)}>Play</button>
+            <button className="banner_btn" onClick={() => setShowDetails(ps => !ps)}>Info</button>
           </div>
           <div className="banner_description">
             {truncateStr(movie?.overview, 150)}
@@ -38,6 +41,9 @@ export default function FilmBanner() {
       <SingleFilmDetails
         open={showDetails}
         onClose={() => setShowDetails(false)}
+        movie={movie}
+        videoId={url}
+        hasTrailer={hasTrailer}
       />
     </>
   )
