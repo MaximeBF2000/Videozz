@@ -13,8 +13,9 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "axios": "^0.19.2",
-    "movie-trailer": "^2.0.6",
+    "axios": "^0.21.1",
+    "is-svg": "^3.0.0",
+    "movie-trailer": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^3.10.0",
