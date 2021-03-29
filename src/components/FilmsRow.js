@@ -107,13 +107,13 @@ export default function FilmsRow({ title, request, bigger }) {
 					}
 				})}
 			</div>
-			{showDetails && (
-				<SingleFilmDetails
-					videoId={videoUrl}
-					movie={movieDetails}
-					hasVideo={hasVideo}
-				/>
-			)}
+			<SingleFilmDetails
+        open={showDetails}
+        onClose={() => setShowDetails(false)}
+        videoId={videoUrl}
+        movie={movieDetails}
+        hasVideo={hasVideo}
+      />
 		</div>
 	)
 }

@@ -3,7 +3,7 @@ import Youtube from "react-youtube"
 
 import ids_to_genres from "../modules/filmGenreConverter"
 
-export default function SingleFilmDetails({ videoId, movie, hasVideo }) {
+export default function SingleFilmDetails({ open = true, onClose, videoId, movie, hasVideo, popup }) {
 	const video_options = {
 		height: 320,
 		width: "100%",
@@ -18,8 +18,11 @@ export default function SingleFilmDetails({ videoId, movie, hasVideo }) {
 		console.log("error")
 	}
 
+  if(!open) return null
+
 	return (
-    <div className="singleFilmDetails">
+    <div className={`singleFilmDetails ${popup && "popup"}`}>
+      <button className="closeBtn" onClick={onClose}>&times;</button>
       <div className="trailer">
         {hasVideo ? (
           <Youtube

@@ -1,46 +1,53 @@
 @import "./config";
 
-.banner{
-  position: relative;
-  background-size: cover;
-  background-position: center;
-  object-fit: cover;
-  height: 100vh;
-  @extend .center-h;
+.banner {
+	position: relative;
+	background-size: cover;
+	background-position: center;
+	object-fit: cover;
+	height: 100vh;
+	mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+	-webkit-mask-image: linear-gradient(
+		to bottom,
+		rgba(0, 0, 0, 1),
+		rgba(0, 0, 0, 1),
+		rgba(0, 0, 0, 1),
+		rgba(0, 0, 0, 1),
+		rgba(0, 0, 0, 0)
+	);
+	@extend .center-h;
 
-  .banner_content{
-    padding: 0 2rem;
+	.banner_content {
+		padding: 0 2rem;
 
-    .banner_title{
-      font-size: 3rem;
-    }
+		.banner_title {
+			font-size: 3rem;
+		}
 
-    .banner_buttons{
-      margin-top: 1rem;
-      margin-bottom: 2.5rem;
+		.banner_buttons {
+			margin-top: 1rem;
+			margin-bottom: 2.5rem;
 
-      .banner_btn{
-        all: unset;
-        cursor: pointer;
-        padding: .3rem 2.5rem;
-        margin-right: 1rem;
-        border-radius: .25rem;
-        background-color: rgba($darkgrey, .9);
-        transition: .3s;
+			.banner_btn {
+				all: unset;
+				cursor: pointer;
+				padding: 0.3rem 2.5rem;
+				margin-right: 1rem;
+				border-radius: 0.25rem;
+				background-color: rgba($darkgrey, 0.9);
+				transition: 0.3s;
 
-        &:hover{
-          background-color: rgba($white, .9);
-          color: #000;
-        }
-      }
+				&:hover {
+					background-color: rgba($white, 0.9);
+					color: #000;
+				}
+			}
+		}
 
-    }
-
-    .banner_description{
-      font-size: .9rem;
-      max-width: 500px;
-      line-height: 1.4;
-    }
-  }
-
+		.banner_description {
+			font-size: 0.9rem;
+			max-width: 500px;
+			line-height: 1.4;
+		}
+	}
 }

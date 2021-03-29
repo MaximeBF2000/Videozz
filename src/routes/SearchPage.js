@@ -5,9 +5,11 @@ import requests, { filmServer } from "../modules/filmRequests"
 
 import Navbar from "../components/Navbar"
 import FilmItem from "../components/FilmItem"
+import SingleFilmDetails from "../components/SingleFilmDetails"
 
 export default function SearchPage() {
   const [movies, setMovies] = useState([])
+  const [showMovie, setShowMovie] = useState(false)
   const { searchTerm } = useStore()
   const history = useHistory()
 
@@ -32,7 +34,9 @@ export default function SearchPage() {
           <p>No results found...</p>
         ) : (
           movies.map((movie, i) => (
-            <FilmItem movie={movie} key={i}/>
+            <>
+              <FilmItem movie={movie} key={i} onClick={() => setShowMovie(ps => !ps)} />
+            </>
           ))
         )}
       </div>
