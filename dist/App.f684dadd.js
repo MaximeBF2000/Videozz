@@ -89073,38 +89073,37 @@ function FilmBanner() {
       url = _getMovieDetails2[0],
       hasTrailer = _getMovieDetails2[1];
 
-  (0, _react.useEffect)(function () {
-    function fetchData() {
-      return _fetchData.apply(this, arguments);
-    }
+  var getRandomMovie = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var response, movies, random;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return _filmRequests.filmServer.get(_filmRequests.default.fetchTrending);
 
-    function _fetchData() {
-      _fetchData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var response, movies, random;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return _filmRequests.filmServer.get(_filmRequests.default.fetchTrending);
+            case 2:
+              response = _context.sent;
+              movies = response.data.results;
+              random = Math.floor(Math.random() * (movies.length - 1));
+              setMovie(movies[random]);
 
-              case 2:
-                response = _context.sent;
-                movies = response.data.results;
-                random = Math.floor(Math.random() * (movies.length - 1));
-                setMovie(movies[random]);
-
-              case 6:
-              case "end":
-                return _context.stop();
-            }
+            case 6:
+            case "end":
+              return _context.stop();
           }
-        }, _callee);
-      }));
-      return _fetchData.apply(this, arguments);
-    }
+        }
+      }, _callee);
+    }));
 
-    fetchData();
+    return function getRandomMovie() {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  (0, _react.useEffect)(function () {
+    getRandomMovie();
   }, []);
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("header", {
     className: "banner",
@@ -89120,11 +89119,9 @@ function FilmBanner() {
   }, /*#__PURE__*/_react.default.createElement("button", {
     className: "banner_btn",
     onClick: function onClick() {
-      return setShowDetails(function (ps) {
-        return !ps;
-      });
+      return getRandomMovie();
     }
-  }, "Play"), /*#__PURE__*/_react.default.createElement("button", {
+  }, "Next"), /*#__PURE__*/_react.default.createElement("button", {
     className: "banner_btn",
     onClick: function onClick() {
       return setShowDetails(function (ps) {
@@ -106669,7 +106666,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59784" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60927" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

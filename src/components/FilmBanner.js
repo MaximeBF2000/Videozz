@@ -12,14 +12,15 @@ export default function FilmBanner() {
 
   const [url, hasTrailer] = getMovieDetails(movie)
 
+  const getRandomMovie = async () => {
+    const response = await filmServer.get(requests.fetchTrending)
+    const movies = response.data.results
+    const random = Math.floor(Math.random() * (movies.length - 1))
+    setMovie(movies[random])
+  }
+
   useEffect(() => {
-    async function fetchData(){
-      const response = await filmServer.get(requests.fetchTrending)
-      const movies = response.data.results
-      const random = Math.floor(Math.random() * (movies.length - 1))
-      setMovie(movies[random])
-    }
-    fetchData()
+    getRandomMovie()
   }, [])
 
   return (
@@ -30,7 +31,7 @@ export default function FilmBanner() {
         <div className="banner_content">
           <h1 className="banner_title"> { movie?.title || movie?.name || movie?.original_name } </h1>
           <div className="banner_buttons">
-            <button className="banner_btn" onClick={() => setShowDetails(ps => !ps)}>Play</button>
+            <button className="banner_btn" onClick={() => getRandomMovie()}>Next</button>
             <button className="banner_btn" onClick={() => setShowDetails(ps => !ps)}>Info</button>
           </div>
           <div className="banner_description">
