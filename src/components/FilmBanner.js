@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import requests, { filmServer } from "../modules/filmRequests"
-import getMovieDetails from "../modules/getMovieDetails"
+import useGetMovieDetails from "../modules/getMovieDetails"
 import SingleFilmDetails from "../components/SingleFilmDetails"
 
 
@@ -10,7 +10,7 @@ export default function FilmBanner() {
   const [movie, setMovie] = useState([])
   const [showDetails, setShowDetails] = useState(false)
 
-  const [url, hasTrailer] = getMovieDetails(movie)
+  const [url, hasTrailer] = useGetMovieDetails(movie)
 
   const getRandomMovie = async () => {
     const response = await filmServer.get(requests.fetchTrending)

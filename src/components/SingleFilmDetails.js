@@ -1,11 +1,16 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Youtube from "react-youtube"
 import { Fade } from "@material-ui/core"
 
 import ids_to_genres from "../modules/filmGenreConverter"
 
 export default function SingleFilmDetails({ open = true, onClose, videoId, movie, hasTrailer }) {
-	if (!open) return null
+  const unmount = () => {
+    document.body.style.overflowY = "unset"
+    return null
+  }
+	if (!open) return unmount()
+
 
 	const video_options = {
 		height: 320,
@@ -20,6 +25,10 @@ export default function SingleFilmDetails({ open = true, onClose, videoId, movie
 	const handleVideoError = () => {
 		console.log("error")
 	}
+
+  useEffect(() => {
+    document.body.style.overflowY = "hidden"
+  }, [])
 
 	return (
 		<Fade in={open}>

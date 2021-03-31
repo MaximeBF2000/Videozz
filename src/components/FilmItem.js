@@ -1,13 +1,13 @@
 import React, { useState } from "react"
 import SingleFilmDetails from "./SingleFilmDetails"
-import getMovieDetails from "../modules/getMovieDetails"
+import useGetMovieDetails from "../modules/getMovieDetails"
 
 
 export default function FilmItem({ movie }) {
 	const IMG_BASE_URL = "https://image.tmdb.org/t/p/original/"
 	const movieName = movie.name || movie.original_title
 
-  const [url, hasTrailer] = getMovieDetails(movie)
+  const [url, hasTrailer] = useGetMovieDetails(movie)
   const [showDetails, setShowDetails] = useState(false)
 
 	return (

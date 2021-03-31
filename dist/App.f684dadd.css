@@ -122,6 +122,9 @@ body .notFoundPage .goBackBtn {
   .navbar {
     padding: 1rem;
   }
+  .navbar .searchBox {
+    display: none;
+  }
   .navbar .toggle_darkmode {
     text-align: center;
   }

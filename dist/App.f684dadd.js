@@ -35199,32 +35199,51 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _react = require("react");
+
 var _movieTrailer = _interopRequireDefault(require("movie-trailer"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var getMovieDetails = function getMovieDetails(movie) {
-  var videoUrl = "";
-  var hasVideo = false; // SEARCH A TRAILER BY FILM NAME (EXTERNAL MODULE)
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var useGetMovieDetails = function useGetMovieDetails(movie) {
+  var _useState = (0, _react.useState)(""),
+      _useState2 = _slicedToArray(_useState, 2),
+      videoUrl = _useState2[0],
+      setVideoUrl = _useState2[1];
+
+  var _useState3 = (0, _react.useState)(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      hasVideo = _useState4[0],
+      setHasVideo = _useState4[1]; // Search by film name on Youtube
+
 
   (0, _movieTrailer.default)((movie === null || movie === void 0 ? void 0 : movie.name) || (movie === null || movie === void 0 ? void 0 : movie.original_title) || (movie === null || movie === void 0 ? void 0 : movie.original_name) || "").then(function (url) {
     // RETURN A VIDEO :
-    hasVideo = true;
+    setHasVideo(true);
     var urlParams = new URLSearchParams(new URL(url).search);
-    videoUrl = urlParams.get("v");
-  }).catch(function (err) {
-    hasVideo = false;
-    videoUrl = "";
-    console.log({
-      errorWithMovieTrailer: err
-    });
+    setVideoUrl(urlParams.get("v"));
+  }).catch(function () {
+    setHasVideo(false);
+    setVideoUrl("");
   });
   return [videoUrl, hasVideo];
 };
 
-var _default = getMovieDetails;
+var _default = useGetMovieDetails;
 exports.default = _default;
-},{"movie-trailer":"node_modules/movie-trailer/index.js"}],"node_modules/fast-deep-equal/index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","movie-trailer":"node_modules/movie-trailer/index.js"}],"node_modules/fast-deep-equal/index.js":[function(require,module,exports) {
 'use strict';
 
 // do not edit .js files directly - edit src/index.jst
@@ -88418,7 +88437,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = SingleFilmDetails;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _reactYoutube = _interopRequireDefault(require("react-youtube"));
 
@@ -88428,6 +88447,10 @@ var _filmGenreConverter = _interopRequireDefault(require("../modules/filmGenreCo
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
 function SingleFilmDetails(_ref) {
   var _ref$open = _ref.open,
       open = _ref$open === void 0 ? true : _ref$open,
@@ -88435,7 +88458,13 @@ function SingleFilmDetails(_ref) {
       videoId = _ref.videoId,
       movie = _ref.movie,
       hasTrailer = _ref.hasTrailer;
-  if (!open) return null;
+
+  var unmount = function unmount() {
+    document.body.style.overflowY = "unset";
+    return null;
+  };
+
+  if (!open) return unmount();
   var video_options = {
     height: 320,
     width: "100%",
@@ -88450,6 +88479,9 @@ function SingleFilmDetails(_ref) {
     console.log("error");
   };
 
+  (0, _react.useEffect)(function () {
+    document.body.style.overflowY = "hidden";
+  }, []);
   return /*#__PURE__*/_react.default.createElement(_core.Fade, {
     in: open
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -88495,7 +88527,7 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _filmRequests = _interopRequireWildcard(require("../modules/filmRequests"));
 
-var _getMovieDetails3 = _interopRequireDefault(require("../modules/getMovieDetails"));
+var _getMovieDetails = _interopRequireDefault(require("../modules/getMovieDetails"));
 
 var _SingleFilmDetails = _interopRequireDefault(require("../components/SingleFilmDetails"));
 
@@ -88536,10 +88568,10 @@ function FilmBanner() {
       showDetails = _useState4[0],
       setShowDetails = _useState4[1];
 
-  var _getMovieDetails = (0, _getMovieDetails3.default)(movie),
-      _getMovieDetails2 = _slicedToArray(_getMovieDetails, 2),
-      url = _getMovieDetails2[0],
-      hasTrailer = _getMovieDetails2[1];
+  var _useGetMovieDetails = (0, _getMovieDetails.default)(movie),
+      _useGetMovieDetails2 = _slicedToArray(_useGetMovieDetails, 2),
+      url = _useGetMovieDetails2[0],
+      hasTrailer = _useGetMovieDetails2[1];
 
   var getRandomMovie = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -105657,7 +105689,7 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _SingleFilmDetails = _interopRequireDefault(require("./SingleFilmDetails"));
 
-var _getMovieDetails3 = _interopRequireDefault(require("../modules/getMovieDetails"));
+var _getMovieDetails = _interopRequireDefault(require("../modules/getMovieDetails"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -105682,10 +105714,10 @@ function FilmItem(_ref) {
   var IMG_BASE_URL = "https://image.tmdb.org/t/p/original/";
   var movieName = movie.name || movie.original_title;
 
-  var _getMovieDetails = (0, _getMovieDetails3.default)(movie),
-      _getMovieDetails2 = _slicedToArray(_getMovieDetails, 2),
-      url = _getMovieDetails2[0],
-      hasTrailer = _getMovieDetails2[1];
+  var _useGetMovieDetails = (0, _getMovieDetails.default)(movie),
+      _useGetMovieDetails2 = _slicedToArray(_useGetMovieDetails, 2),
+      url = _useGetMovieDetails2[0],
+      hasTrailer = _useGetMovieDetails2[1];
 
   var _useState = (0, _react.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -106134,7 +106166,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62157" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59166" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

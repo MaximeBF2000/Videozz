@@ -1,23 +1,21 @@
+import { useState } from "react"
 import movieTrailer from "movie-trailer"
 
-const getMovieDetails = movie => {
-  let videoUrl = ""
-  let hasVideo = false
+const useGetMovieDetails = movie => {
+  const [videoUrl, setVideoUrl] = useState("")
+  const [hasVideo, setHasVideo] = useState(false)
 
-  // SEARCH A TRAILER BY FILM NAME (EXTERNAL MODULE)
-  movieTrailer(
-    movie?.name || movie?.original_title || movie?.original_name || ""
-  )
+  // Search by film name on Youtube
+  movieTrailer(movie?.name || movie?.original_title || movie?.original_name || "")
     .then(url => {
       // RETURN A VIDEO :
-      hasVideo = true
+      setHasVideo(true)
       const urlParams = new URLSearchParams(new URL(url).search)
-      videoUrl = urlParams.get("v")
+      setVideoUrl(urlParams.get("v"))
     })
-    .catch(err => {
-      hasVideo = false
-      videoUrl = ""
-      console.log({errorWithMovieTrailer: err})
+    .catch(() => {
+      setHasVideo(false)
+      setVideoUrl("")
     })
 
 
@@ -25,4 +23,4 @@ const getMovieDetails = movie => {
 }
 
 
-export default getMovieDetails
+export default useGetMovieDetails
