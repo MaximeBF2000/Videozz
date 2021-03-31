@@ -40,7 +40,6 @@ export default function Navbar() {
 
 	const search = e => {
     e.preventDefault()
-		console.log("search : ", searchValue)
     dispatch({ type: "SET_SEARCH", payload: searchValue })
     if(searchValue) history.push("/search")
 	}

@@ -35018,8 +35018,11 @@ var _default = {
   fetchHorrorMovies: "/discover/movie?api_key=".concat(API_KEY, "&with_genres=27"),
   fetchRomanceMovies: "/discover/movie?api_key=".concat(API_KEY, "&with_genres=10749"),
   fetchDocumentaries: "/discover/movie?api_key=".concat(API_KEY, "&with_genres=99"),
-  searchQuery: function searchQuery(query, page) {
+  searchMovies: function searchMovies(query, page) {
     return "/search/movie?api_key=".concat(API_KEY, "&language=en-US&page=").concat(page !== null && page !== void 0 ? page : "1", "&include_adult=false&query=").concat(query.toLowerCase());
+  },
+  searchSeries: function searchSeries(query, page) {
+    return "/search/tv?api_key=".concat(API_KEY, "&language=en-US&page=").concat(page !== null && page !== void 0 ? page : "1", "&include_adult=false&query=").concat(query.toLowerCase());
   }
 };
 exports.default = _default;
@@ -88864,7 +88867,6 @@ function Navbar() {
 
   var search = function search(e) {
     e.preventDefault();
-    console.log("search : ", searchValue);
     dispatch({
       type: "SET_SEARCH",
       payload: searchValue
@@ -105975,6 +105977,14 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -106015,7 +106025,7 @@ function SearchPage() {
 
     function _fetchData() {
       _fetchData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var res;
+        var resMovies, resSeries;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -106023,31 +106033,38 @@ function SearchPage() {
                 setLoading(true);
                 _context.prev = 1;
                 _context.next = 4;
-                return _filmRequests.filmServer.get(_filmRequests.default.searchQuery(searchTerm), {
+                return _filmRequests.filmServer.get(_filmRequests.default.searchMovies(searchTerm), {
                   cancelToken: source.token
                 });
 
               case 4:
-                res = _context.sent;
-                setMovies(res.data.results);
+                resMovies = _context.sent;
+                _context.next = 7;
+                return _filmRequests.filmServer.get(_filmRequests.default.searchSeries(searchTerm), {
+                  cancelToken: source.token
+                });
+
+              case 7:
+                resSeries = _context.sent;
+                setMovies([].concat(_toConsumableArray(resSeries.data.results), _toConsumableArray(resMovies.data.results)));
                 setLoading(false);
-                _context.next = 12;
+                _context.next = 15;
                 break;
 
-              case 9:
-                _context.prev = 9;
+              case 12:
+                _context.prev = 12;
                 _context.t0 = _context["catch"](1);
                 console.error("Error while fetching movies : ", _context.t0);
 
-              case 12:
+              case 15:
                 setLoading(false);
 
-              case 13:
+              case 16:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 9]]);
+        }, _callee, null, [[1, 12]]);
       }));
       return _fetchData.apply(this, arguments);
     }
@@ -106166,7 +106183,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59166" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62383" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

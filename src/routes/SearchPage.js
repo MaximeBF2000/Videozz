@@ -18,8 +18,9 @@ export default function SearchPage() {
     async function fetchData() {
       setLoading(true)
       try {
-        const res = await filmServer.get(requests.searchQuery(searchTerm), { cancelToken: source.token })
-        setMovies(res.data.results)
+        const resMovies = await filmServer.get(requests.searchMovies(searchTerm), { cancelToken: source.token })
+        const resSeries = await filmServer.get(requests.searchSeries(searchTerm), { cancelToken: source.token })
+        setMovies([...resSeries.data.results, ...resMovies.data.results])
         setLoading(false)
       } catch(err) {
         console.error("Error while fetching movies : ", err)
