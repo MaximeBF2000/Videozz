@@ -24,7 +24,7 @@
     "regenerator-runtime": "^0.13.6"
   },
   "devDependencies": {
-    "cssnano": "^4.1.10",
+    "cssnano": "^6.0.0",
     "sass": "^1.26.10"
   }
 }
